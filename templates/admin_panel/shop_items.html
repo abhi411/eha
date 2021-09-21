@@ -1,0 +1,134 @@
+{% extends "admin_panel/pages/base.html" %}
+{% load static %}
+
+{% block title %} EHA - PRODUCTS {% endblock %}
+
+{% block style %}
+<style type="text/css">
+
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="card card-primary">
+
+  <div class="card-header">
+    <h4>PRODUCTS</h4>
+    <a href="{% url 'shop-item-add' %}" class="btn btn-success pull-right"><i class="fas fa-plus"></i></a>
+  </div>
+
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-12">
+          <div class="col-md-12 mb-20">
+            {% if shop_items %}
+              <div class="table-responsive">
+                <table class="table table-hover" id="table_items">
+                  <thead>
+                    <tr>
+                      <th class="text-center" style="width: 100px;">Sr.No</th>
+                      <th>Title</th>
+                      <th>Category</th>
+                      <th>Price</th>
+                      <th>Date</th>
+                      <th style="width: 30px"></th>
+                      <th style="width: 30px"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for item in shop_items %}
+                    <tr>
+                      <td onclick="redirect('{{item.id}}')" class="text-center">{{ forloop.counter }}</td>
+
+                      <td onclick="redirect('{{item.id}}')">{{item.title|safe}}</td>
+                      <td onclick="redirect('{{item.id}}')">{{item.category}}</td>
+                      <td onclick="redirect('{{item.id}}')">$ {{item.price}}</td>
+                      <td onclick="redirect('{{item.id}}')">{{item.created_date}}</td>
+                      <td>
+                        <a href="{% url 'shop-item-edit' item.id %}" class="btn btn-success btn-sm"> <i class="fas fa-pen"></i></a>
+                      </td>
+                      <td>
+                        <a onclick = "delete_shop_item('{{item.id}}')" class="btn btn-warning btn-sm" > 
+                          <i class=" fas fa-trash" style="color: #fff;"></i></a>
+                      </td>
+                    </tr>
+
+                    
+
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+              {% else %}
+              <div>No data found.</div>
+              {% endif %}
+           </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+ <script type="text/javascript">
+  $(document).ready(function() {
+      $('#table_items').DataTable();
+  });
+</script>
+
+<script type="text/javascript">
+
+  // detete SHOP ITEM
+  function delete_shop_item(id){
+    swal({
+    title: "Are you sure?",
+    text: "Are you sure you want to delete this product?",
+    icon: "warning",
+    buttons: true,
+    closeOnClickOutside: false,
+    dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        $.ajax({
+          method : "POST",
+          url : "/admin_panel/api/shop_item_delete",
+          contentType: "application/json",
+          data : JSON.stringify({
+            id:id,
+          }),
+          success : function(response){
+            console.log(response)
+            
+            if (response['status'] == "1"){
+                swal({
+                  title:"Product deleted successfully",
+                  icon:"success",
+                  button:"Ok",
+                  closeOnClickOutside: false,
+                }).then(function(){
+                  location.reload();
+                })
+            }    
+            else if(response['status'] == "0"){ 
+                swal({
+                  title:response["msg"],
+                  icon:"warning",
+                  button:"Ok",
+                  closeOnClickOutside: false,
+                }).then(function(){
+                  // location.reload();
+                })
+            }  
+          }
+        });   
+      }
+    });
+  }
+
+  // Function to redirect Deatil page
+  function redirect(id){
+    location.href = "/admin_panel/shop-item/"+id;
+  }
+</script>
+{% endblock %}
+

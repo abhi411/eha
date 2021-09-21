@@ -1,0 +1,85 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<!-- Hrader of website -->
+	{% include "eha_app/pages/header.html" %}
+
+	<!-- Title of Webpage -->
+	<title>{% block title %}EHA - Home{% endblock %}</title>
+
+	<!-- Dynamic block -->
+	{% block style %}{% endblock %}
+
+</head>
+
+<body>
+	<!-- Topbar block of website -->
+	{% include "eha_app/pages/topbar.html" %}
+  <!-- End Topbar -->
+
+	<!-- Navigation block of website -->
+	{% include "eha_app/pages/navigation.html" %}
+  <!-- End Navigation -->
+
+  <main id="main">
+	  <!-- Content Block -->
+	  {% block content %}{% endblock %}
+	  <!-- End Content Block -->
+
+	  <!-- ======= Footer ======= -->
+	  {% include "eha_app/pages/footer.html" %}
+	  <!-- End Footer -->
+  </main><!-- End #main -->
+
+
+  <!-- Vendor JS Files -->
+  <script src="{% static 'assets/vendor/jquery/jquery.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/jquery.easing/jquery.easing.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/php-email-form/validate.js' %}"></script>
+  <script src="{% static 'assets/vendor/owl.carousel/owl.carousel.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/isotope-layout/isotope.pkgd.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/venobox/venobox.min.js' %}"></script>
+
+  <!-- Template Main JS File -->
+  <script src="{% static 'assets/js/main.js' %}"></script>
+
+
+<!-- To UPADTE the CART COUNT -->
+ <script type="text/javascript">
+  $(document).ready(function() {
+	$(".mobile-nav-toggle").empty();
+	$(".mobile-nav-toggle").append("<a href='#' class='get-started-btn mob-menu'>Menu</a>");
+  // $(".mobile-nav-toggle").append("<a href='#' class='get-started-btn mob-menu'><i class='icofont-navigation-menu'></i></a>");
+	
+	<!-- To find the cart count -->
+  	$.ajax({
+      method : "POST",
+      url : "/api/cart_count",
+      contentType: "application/json",
+
+      data : JSON.stringify({}),
+      success : function(response){
+        // alert(console.log(response))
+        
+        if (response['status'] == "1"){
+        // if no items in the cart
+          if(response['cart_count']=='0' || response['cart_count']==0){
+              $('#cart_id').hide();
+          }
+          // If some items are in the cart 
+          else{
+              $('#cart_id').text(response['cart_count'])
+              $('#cart_id').show();
+          }
+        }
+      }
+
+  });
+  });
+</script>
+</body>
+</html>

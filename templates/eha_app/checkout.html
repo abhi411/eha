@@ -1,0 +1,52 @@
+{% extends "eha_app/pages/base.html" %}
+{% load static %}
+
+{% block title %} EHA - Checkout {% endblock %}
+
+
+{% block content %}
+
+<!-- loader -->
+<div style="text-align: center; font-size: 20px; margin-top: 200px;">
+    <div class="loading"><span></span> Processing...</div>
+</div>
+<!-- message -->
+<div style="text-align: center; margin: 30px;">
+    <p>
+        You will be redirect to payment gateway page. It might takes a few seconds.
+        <br>
+        Please do not refresh the page or click the "Back" or "Close" button of your browser.
+    </p>
+</div>
+<script type="text/javascript">
+
+var stripe;
+$(document).ready(function() {
+
+	console.log("Sanity check!");
+	$.ajax({
+		url : "/config/",
+		method : "POST",
+		data :{},
+		success : function(response){
+			stripe = Stripe(response.publicKey);
+			// console.log(stripe)
+			// alert(stripe)
+			// alert(stripe)
+            // Get Checkout Session ID
+            fetch("/create-checkout-session/")
+            .then((result) => { return result.json(); })
+            .then((data) => {
+				console.log(data);
+				// Redirect to Stripe Checkout
+				return stripe.redirectToCheckout({sessionId: data.sessionId})
+            })
+            .then((res) => {
+				console.log(res);
+            });
+		}
+	});
+});
+
+</script>
+{% endblock %}

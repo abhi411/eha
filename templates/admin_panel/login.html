@@ -1,0 +1,131 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
+  <title>Admin</title>
+
+  <!-- General CSS Files -->
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+  <link rel="stylesheet" href="{% static 'admin/assets/css/app.min.css' %}">
+
+  <!-- Template CSS -->
+  <link rel="stylesheet" href="{% static 'admin/assets/css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'admin/assets/css/mystyle1.css' %}">
+  <link rel="stylesheet" href="{% static 'admin/assets/css/components.css' %}">
+
+  <!-- Custom style CSS -->
+  <link rel="stylesheet" href="{% static 'admin/assets/css/custom.css' %}"> 
+  <link rel='shortcut icon' type='image/x-icon' href="{% static 'eha_ico.png' %}" />
+  </head>
+
+<body>
+	<!-- LOADER -->
+  <div class="loader"></div>
+
+  <!-- LOGIN SECTION -->
+  <section class="section">
+    <div class="container mt-5">
+      <div class="row">
+        <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-6 offset-lg-3 col-xl-4 offset-xl-4">
+
+        	<!-- LOGIN CARD -->
+          <div class="card card-primary">
+          	<!-- CARD HEADER -->
+            <div class="card-header">
+              <h4>Login</h4>
+            </div>
+            <!-- CARD BODY -->
+            <div class="card-body">
+
+                <div class="form-group">
+                  <label for="email">Username</label>
+                  <input id="email" type="email" class="form-control" name="email" tabindex="1" required autofocus>
+				          <small class="err-msg" id ="email_err">Please enter username</small>
+                </div>
+
+                <div class="form-group">
+                  <label for="password" class="control-label">Password</label>
+                  <input id="password" type="password" class="form-control" name="password" tabindex="2" required>
+				        	<small class="err-msg" id ="password_err">Please enter valid password</small>
+                </div>
+
+                <div class="form-group">
+                  <button type="submit" class="btn btn-success btn-block" tabindex="4" onclick="Login()">Login</button>
+			        		<small class="err-msg" id ="login_err">Invalid Credentials...!</small>
+                </div>
+            </div>
+            <!-- CARD BODY END -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- General JS Scripts -->
+  <script src="{% static 'admin/assets/js/app.min.js' %}"></script>
+  <!-- Template JS File -->
+  <script src="{% static 'admin/assets/js/scripts.js' %}"></script>
+  <!-- Custom JS File -->
+  <script src="{% static 'admin/assets/js/custom.js' %}"></script>
+
+</body>
+
+
+<script>
+$(document).ready(function(){
+	$(document).bind('keypress', function(e) {
+      if(e.keyCode==13){
+           $('#button_submit').trigger('click');
+       }
+  });
+})
+
+	$('#email').keyup(function(){
+		$('#email_err').hide();
+		$('#login_err').hide();
+	})
+	$('#password').keyup(function(){
+		$('#password_err').hide();
+		$('#login_err').hide();
+	})
+
+
+var emailfilter = /^\b[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b$/i
+
+function Login(){
+
+  var email = $("#email").val();
+  var password = $("#password").val();
+
+	if (email == ""){
+		$('#email_err').show();
+	}	
+	else if (password == ""){
+		$('#password_err').show();
+	}
+	else{
+		$.ajax({
+			method : "POST",
+			url : "/admin_panel/api/login",
+			data : {
+				'email':email,
+				'password':password,
+			},
+			success : function(response){
+				console.log(response)
+				if (response['status'] == "0"){
+					$('#login_err').show();
+				}
+				else{
+					location.href = "/admin_panel/dashboard";
+				}
+			}
+		});
+	}
+}
+</script>
+</html>

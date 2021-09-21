@@ -1,0 +1,50 @@
+{% extends "eha_app/pages/base.html" %}
+{% load static %}
+
+{% block title %} EHA - ENVIRONMENTAL HEALTH ANALYTICS {% endblock %}
+
+
+{% block content %}
+
+
+<!-- ======= PRODUCTS Section ======= -->
+<section id="about" class="about m-t-100">
+<div class="container">
+
+  <div class="section-title">
+    <h2>REPORT DETAILS</h2>
+  </div>
+  <div class="row">
+    <div class="col-lg-5 order-1 order-lg-2">
+      <img src="{% static 'bg.jpg' %}" class="img-fluid" alt=""
+      style="box-shadow: 0 5px 11px 0 rgb(0 0 0 / 18%), 0 4px 15px 0 rgb(0 0 0 / 15%);">
+    </div>
+    <div class="col-lg-7 pt-4 pt-lg-0 order-2 order-lg-1">
+      <h3 class="text-green">Ultra-local Air Quality Report</h3>
+      
+      <p><!--  class="font-italic" style="font-weight: 600;" -->
+        Our "Ultra-local Air Quality Report" provides you with a detailed report on historical levels of PM<sub>2.5</sub> (an air pollutant identified by the U.S. EPA as a public health priority) at and around any US address (excluding Alaska and Hawaii), whether it be your current residence or workplace, or a future home you'd like to buy.  
+      </p>
+
+      <ul  style="list-style-type: disc;"><!-- font-weight: 600;  -->
+        <li class="mb-3">
+          Provides a comparison of the levels of air pollution at your address with the US EPA health-based National Ambient Air Quality Standards (NAAQS).
+        </li>
+
+        <li>
+          Can help you in making informed decisions about the air quality at that location.
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+</section>
+<!-- End PRODUCTS Section -->
+
+<div class="note-box">
+  <p class="mb-0"> To purchase products, please visit our <a href="/shop" style="font-weight: 600;"> <i>Shop</i></a></p>
+</div>
+
+
+
+{% endblock %}

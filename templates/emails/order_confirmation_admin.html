@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+  <head>
+    <style type="text/css">
+      .thm-btn {
+        display: inline-block;
+        vertical-align: middle;
+        border: none;
+        outline: none;
+        background-color: #f16101;
+        font-size: 15px;
+        font-weight: bold;
+        color: #fff !important;
+        padding: 6.5px 27px;
+        -webkit-transition: all .4s ease;
+        transition: all .4s ease;
+        text-decoration: none;
+    }
+    td{
+      padding: 10px;
+    }
+    th{
+      padding: 10px;
+    }
+    </style>
+  </head>
+
+  <body style="font-family: 'cambria', sans-serif; font-size: 16px;">
+    <div align="center">
+      <div style="max-width: 680px; min-width: 500px; margin-top: 20px; background: #4caf5066;">   
+        <div style="background: white; border: 2px solid #aad4ac">
+          <img src="http://52.14.204.237:8000/static/assets/img/logo1.jpg" width="250" alt="EHA" border="0" style="width: 200px; padding: 5px;" />
+        </div> 
+        <div  style="border-top: 1px solid #ececec; text-align: left;">
+          <div style="margin: 30px;">
+            <h3>Hi, <br></h3>
+            <p><br>The following order receieved.</p><br>
+
+            <h3>Order Summary</h3>
+			<h4>Sold to  : {{name}}</h4>
+            <table border="1px" cellspacing="0px" width="100%">
+              <tr>
+                <th>#</th>
+                <th>Item</th>
+                <th>Date</th>
+                <th>Price</th>
+              </tr>
+              {% for item in items %}
+              <tr>
+                <th>{{forloop.counter}}</th>
+                <td>{{item.fk_shop_item.title|safe}}</td>
+                <td>{{item.created_date}}</td>
+                <td>$ {{item.payment}}</td>
+              </tr>
+              {% endfor %}
+              <tr>
+                <th colspan="3" style="text-align: right;">Subtotal : </th>
+                <th>$ {{total}}</th>
+              </tr>
+            </table>
+
+            <p><br><b>Address : {{address}}</b><br></p>
+            <h3 style="color: #f19000;"><i style="color: green;">
+              Environmental Health Analytics, LLC
+            </i><br></h3>
+            <hr>
+            <small><i>This email was for notification. Please do not reply to this message.</i></small><br>
+            <br>
+          </div>
+        </div>   
+      </div>   
+    </div>
+  </body>
+</html>

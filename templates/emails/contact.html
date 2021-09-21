@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+  <head>
+    <style type="text/css">
+      .thm-btn {
+        display: inline-block;
+        vertical-align: middle;
+        border: none;
+        outline: none;
+        background-color: #f16101;
+        font-size: 15px;
+        font-weight: bold;
+        color: #fff !important;
+        padding: 6.5px 27px;
+        -webkit-transition: all .4s ease;
+        transition: all .4s ease;
+        text-decoration: none;
+    }
+    </style>
+  </head>
+
+  <body style="font-family: 'cambria', sans-serif; font-size: 16px;">
+    <div align="center">
+      <div style="max-width: 680px; min-width: 500px; margin-top: 20px; background: #4caf5066;">   
+        <div style="background: white; border: 2px solid #aad4ac">
+          <img src="http://52.14.204.237:8000/static/assets/img/logo1.jpg" width="250" alt="EHA" border="0" style="width: 200px; padding: 5px;" />
+        </div> 
+        <div  style="border-top: 1px solid #ececec; text-align: left;">
+          <div style="margin: 30px;">
+            <p>Sender Name : {{name}}</p>
+            <p>Email id : {{email}}</p>
+            <p>Subject : {{subject}}</p>
+            <p>{{message}}</p>
+            <br> 
+            <p>Thank You</p>
+            <br>
+
+            <h3 style="color: #f19000;"><i style="color: green;">
+              Environmental Health Analytics, LLC
+            </i><br></h3>
+            <br>
+          </div>
+        </div>   
+      </div>   
+    </div>
+  </body>
+</html>

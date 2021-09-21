@@ -1,0 +1,88 @@
+{% extends "admin_panel/pages/base.html" %}
+{% load static %}
+
+{% block title %} EHA - SHOP ITEMS {% endblock %}
+
+{% block style %}
+<style type="text/css">
+  
+</style>
+{% endblock %}
+
+{% block content %} 
+
+<div class="card card-primary">
+ <div class="card-header">
+    <h4>ORDERS</h4>
+    <!-- <a  class="btn btn-success pull-right"><i class="fas fa-plus"></i></a> -->
+  </div>
+<div class="card-body">
+    <div class="row">
+		<div class="col-md-12">
+			<div class="col-md-12 mb-20">
+            {% if order_items %}
+              <div class="table-responsive">
+                <table class="table table-hover" id="table_items">
+                  <thead>
+                    <tr>
+                      <th class="text-center" style="width: 100px;">Sr.No</th>
+                      <th>Customer</th>
+					  <th>Order No.</th>
+                      <!-- <th>Products</th> -->
+                      <!-- <th>Coupon Code</th> -->
+                      <!-- <th>$</th> -->
+                      <th>Payment</th>
+                      <th>Date</th>
+                      
+                      <th style="width: 30px"></th>
+                      <!-- <th style="width: 30px"></th> -->
+                    </tr>
+                  </thead>
+				  <tbody>
+                    {% for item in order_items %}
+                    <tr>
+                      <td onclick="redirect('{{item.order_no}}')" class="text-center">{{ forloop.counter }}</td>
+
+                      <td onclick="redirect('{{item.order_no}}')">{{item.fk_customer}}</td>
+                      <td onclick="redirect('{{item.order_no}}')">{{item.order_no}}</td>
+                      <!-- <td onclick="redirect('{{item.id}}')">{{item.fk_shop_item}}</td> -->
+                      <!-- <td onclick="redirect('{{item.id}}')">{{item.fk_coupon}}</td> -->
+                      <!-- <td onclick="redirect('{{item.id}}')">{{item.price}}</td> -->
+                      <td onclick="redirect('{{item.order_no}}')">$ {{item.total}}</td>
+                      <td onclick="redirect('{{item.order_no}}')">{{item.created_date}}</td>
+                      <td>
+                        <a href="{% url 'order-item-detail' item.id %}" class="btn btn-success btn-sm"><i class="fa fa-eye" aria-hidden="true">View</i></a>
+                      </td>
+					  
+                    </tr>
+ 
+                    
+
+                    {% endfor %}
+                  </tbody>
+				  
+				</table>
+              </div>
+              {% else %}
+              <div>No data found.</div>
+              {% endif %}
+           </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  $(document).ready(function() {
+      $('#table_items').DataTable();
+  });
+  
+  
+  // Function to redirect Deatil page
+<!-- function redirect(order_no){  -->
+   <!-- location.href = "/admin_panel/order-item/"+order_no; -->
+  <!-- } -->
+</script>
+{% endblock %}
+
+			  

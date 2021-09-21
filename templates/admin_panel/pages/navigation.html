@@ -1,0 +1,93 @@
+{% load static %}
+
+<div class="loader"></div>
+<div id="app">
+  <div class="main-wrapper main-wrapper-1">
+    <div class="navbar-bg"></div>
+
+      <!-- TOP NAVIGATION BAR -->
+      <nav class="navbar navbar-expand-lg main-navbar sticky">
+        <div class="form-inline mr-auto">
+          <ul class="navbar-nav mr-3">
+            <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg
+                  collapse-btn"> <i data-feather="align-justify"></i></a></li>
+          </ul>
+        </div>
+
+        <ul class="navbar-nav navbar-right"> 
+          <li class="dropdown">
+            <a href="#" data-toggle="dropdown"
+              class="nav-link dropdown-toggle nav-link-lg nav-link-user"> 
+              <img alt="image" src="{% static 'admin/assets/img/user.jpg' %}"
+                class="user-img-radious-style"> 
+                <span class="d-sm-none d-lg-inline-block"></span>
+            </a>
+
+            <div class="dropdown-menu dropdown-menu-right pullDown">
+              <div class="dropdown-title">Hello Admin</div>
+              <div class="dropdown-divider"></div>
+              <a href="/admin_panel/logout" class="dropdown-item has-icon text-danger"> 
+                <i class="fas fa-sign-out-alt"></i><label>Sign Out</label> 
+              </a>
+            </div>
+          </li>          
+        </ul>
+      </nav>
+
+      <!-- SIDE PANEL WITH MENUS -->
+
+      <div class="main-sidebar sidebar-style-2">
+        <aside id="sidebar-wrapper">
+
+          <!-- COMPANY LOGO -->
+          <div class="sidebar-brand">
+            <!-- <a href="index.html"> <span -->
+                <!-- class="logo-name"><a href="/admin_panel/dashboard" class="site_title"><img src="{% static 'assets/img/logo2.jpg' %}" alt="logo" style="width:40px"> </a></span> -->
+            <!-- </a> -->
+      <a href="index.html"> <span
+                class="logo-name"><a href="/admin_panel/dashboard" class="site_title"><img src="{% static 'logo_new.png' %}" alt="logo" style="width:40px"> </a></span>
+            </a>
+          </div>
+      
+          <!-- SIDE MENU -->
+          <ul class="sidebar-menu" >
+            <li >
+              <a href="/admin_panel/dashboard"><i data-feather="clipboard"></i><span>Dashboard</span></a>
+            </li>
+
+            <li class="dropdown"class="active">
+              <a href="/admin_panel/shop-items">
+                <i data-feather="book"></i><span>Products</span></a>
+            </li>
+
+            <li class="dropdown"class="active">
+              <a href="/admin_panel/coupons">
+                <i data-feather="award"></i><span>Coupons</span></a>
+            </li>
+
+            <li class="dropdown"class="active">
+              <a href="/admin_panel/order-items">
+                <i data-feather="box"></i><span>Orders</span></a>
+            </li>
+
+            <!-- <li class="dropdown"class="active"> -->
+              <!-- <a href="/admin_panel/puc"> -->
+                <!-- <i data-feather="credit-card"></i><span>Payments</span></a> -->
+            <!-- </li> -->
+
+             <!-- <li class="dropdown"class="active">
+              <a href="#" class="menu-toggle nav-link has-dropdown"><i data-feather="package"></i><span>Inventory</span></a> 
+              <ul class="dropdown-menu">
+                <li><a class="nav-link" href="/admin_panel/items/">Items</a></li>
+                <li><a class="nav-link" href="/admin_panel/inward/">Inward Item</a></li>
+                <li><a class="nav-link" href="/admin_panel/outward/">Outward Item</a></li>
+              </ul>
+            </li> -->
+           <li>
+              <a href="/admin_panel/change-password-page"><i data-feather="key"></i><span>Change Password</span></a>
+            </li>
+          </ul>
+        </aside>  
+      </div> 
+    </div>
+  </div>

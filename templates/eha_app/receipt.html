@@ -1,0 +1,85 @@
+{% extends "eha_app/pages/base.html" %}
+{% load static %}
+
+{% block title %} EHA - SHOP {% endblock %}
+
+{% block content %}
+
+<!-- ======= shop-item Section ======= -->
+<section class="team section-bg m-t-100">
+  <div class="container">
+
+    <div class="section-title">
+      <h2>Receipt</h2>
+    </div>
+
+      <div class="row justify-content-md-center" style="min-height: 200px;">
+        <div class="col-lg-12 col-md-12 d-flex align-items-stretch">
+          <div class="card card-shop-item">
+            <div class="card-body table-responsive">
+            	<h4 style="color: green;">Environmental Health Analytics, LLC</h4>
+            	<div class="text-right"><b>Date :</b> {{date}}</div>
+            	<div class="text-right"><b>Order # :</b> {{order_no}}</div>
+        		<hr>
+        		<h5>Sold to : {{customer.name}}</h5>
+        		{% if orders %}
+		          <table class="table">
+		            <thead>
+		              <tr>
+		                <th>#</th>
+		                <th>Item</th>
+		                <th>Category</th>
+		                <th>Ordered</th>
+		                <th>Coupon Code</th>
+		                <th>Price</th>
+		                <th>Discount</th>
+		                <th>Amount</th>
+		              </tr>
+		            </thead>
+		            <tbody>
+		              {% for order in orders %}
+		              <tr>
+		                <th scope="row">{{forloop.counter}}</th>
+		                <td>{{order.fk_shop_item.title|safe}}</td>
+		                <td>{{order.fk_shop_item.category}}</td>
+		                <td>{{order.created_date}}</td>
+		                <td>
+		                	{% if order.fk_coupon.coupon_code %}
+		                		{{order.fk_coupon.coupon_code}}
+		                	{% else %}
+		                		-
+		                	{% endif %}
+		                </td>
+		                <td>$ {{order.price}}</td>
+		                <td>
+		                	{% if order.fk_coupon.discount %}
+		                		{{order.fk_coupon.discount}} %
+		                	{% else %}
+		                		-
+		                	{% endif %}
+		                </td>
+		                <td>$ {{order.payment}}</td>
+		              </tr>
+		              {% endfor %}
+		              <tr>
+		              	<th colspan="7" class="text-right"><b>Total : </b></th>
+		              	<th>$ {{amount_total}}</th>
+		              </tr>
+		              <tr>
+		              	<th colspan="8">Payment Type : {{payment_type}}</th>
+		              </tr>
+		              <tr>
+		              	<th colspan="2">Address:</th>
+		              	<td colspan="6">{% with orders|first as ord %}{{ ord.address|default_if_none:"Not available" }}{% endwith %}</td>
+		              </tr>
+		            </tbody>
+		          </table>
+          		{% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+
+</div>
+</section><!-- End Team Section -->
+{% endblock %}

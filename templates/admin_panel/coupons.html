@@ -1,0 +1,364 @@
+{% extends "admin_panel/pages/base.html" %}
+{% load static %}
+
+{% block title %} EHA - Coupons {% endblock %}
+
+{% block style %}
+<style type="text/css">
+
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="card card-primary">
+
+  <div class="card-header">
+    <h4>COUPONS</h4>
+    <a href="#" class="btn btn-success pull-right"  data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo"><i class="fas fa-plus"></i></a>
+  </div>
+
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-12">
+          <div class="col-md-12 mb-20">
+            {% if coupons %}
+              <div class="table-responsive">
+                <table class="table" id="table_staff">
+                  <thead>
+                    <tr>
+                      <th class="text-center" style="width: 100px;">Sr.No</th>
+                      <th>Coupon Code</th>
+                      <th>Discount</th>
+                      <th>Expiry Date</th>
+                      <th>Created Date</th>
+                      <th style="width: 30px"></th>
+                      <th style="width: 30px"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for coupon in coupons %}
+                    <tr>
+                      <td class="text-center">{{ forloop.counter }}</td>
+                      <td>{{coupon.coupon_code}}</td>
+                      <td>{{coupon.discount}} %</td>
+                      <td>{{coupon.expiry_date}}</td>
+                      <td>{{coupon.created_date}}</td>
+                      <td>
+                        <a href="#" class="btn btn-success btn-sm"  data-toggle="modal" data-target="#exampleModal1" onclick="set_update_data('{{coupon.id}}','{{coupon.coupon_code}}','{{coupon.discount}}','{{coupon.expiry_date|date:'Y-m-d'}}')"> <i class="fas fa-pen"></i></a>
+                      </td>
+                      <td>
+                        <a onclick = "delete_coupon('{{coupon.id}}')" class="btn btn-warning btn-sm" > 
+                          <i class=" fas fa-trash" style="color: #fff;"></i></a>
+                      </td>
+                    </tr>                     
+ 
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+              {% else %}
+              <div>No data found.</div>
+              {% endif %}
+           </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL FOR NEW COUPON -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">New Coupon</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="coupon_code" class="col-form-label">Coupon code<span class="mandatory">*</span> :</label>
+            <input type="text" class="form-control" id="coupon_code">
+            <small class="err-msg" id="coupon_code_err">Please enter coupon code</small>
+          </div>
+          <div class="form-group">
+            <label for="discount" class="col-form-label">Discount (%)<span class="mandatory">*</span> :</label>
+            <input type="number" class="form-control" id="discount" min="0" max="100">
+            <small class="err-msg" id="discount_err">Please enter discount</small>
+            <small class="err-msg" id="discount_invalid_err">Invalid discount</small>
+          </div>
+          <div class="form-group">
+            <label for="expiry_date" class="col-form-label">Expiry date<span class="mandatory">*</span> :</label>
+            <input type="date" class="form-control" id="expiry_date">
+            <small class="err-msg" id="expiry_date_err">Please enter expiry date</small>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success" onclick="save()">Save Coupon</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL FOR EDIT COUPON -->
+<div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Edit Coupon</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <input type="hidden" id="edit_id">
+          <div class="form-group">
+            <label for="coupon_code1" class="col-form-label">Coupon code<span class="mandatory">*</span> :</label>
+            <input type="text" class="form-control" id="coupon_code1">
+            <small class="err-msg" id="coupon_code_err1">Please enter coupon code</small>
+          </div>
+          <div class="form-group">
+            <label for="discount1" class="col-form-label">Discount (%)<span class="mandatory">*</span> :</label>
+            <input type="number" class="form-control" id="discount1" min="0" max="100">
+            <small class="err-msg" id="discount_err1">Please enter discount</small>
+            <small class="err-msg" id="discount_invalid_err1">Invalid discount</small>
+          </div>
+          <div class="form-group">
+            <label for="expiry_date1" class="col-form-label">Expiry date<span class="mandatory">*</span> :</label>
+            <input type="date" class="form-control" id="expiry_date1">
+            <small class="err-msg" id="expiry_date_err1">Please enter expiry date</small>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-warning" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-success" onclick="update()">Update Coupon</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+ <script type="text/javascript">
+  $(document).ready(function() {
+      $('#table_staff').DataTable();
+  });
+</script>
+
+
+<script>
+  // to ADD new COUPON
+  function save(){
+    coupon_code = $("#coupon_code").val();
+    discount = $("#discount").val();
+    expiry_date = $("#expiry_date").val();
+
+    if (coupon_code == ""){
+      $('#coupon_code_err').show();
+    }
+    else if (discount== ""){
+      $('#discount_err').show();
+    }
+    else if(discount<0 || discount>100){
+      $('#discount_invalid_err').show();
+    }
+    else if (expiry_date == ""){
+      $('#expiry_date_err').show();
+    }
+    else{
+
+      $.ajax({
+        method : "POST",
+        url : "/admin_panel/api/coupon_add",
+        contentType: "application/json",
+        data : JSON.stringify({
+          coupon_code : coupon_code,
+          discount : discount,
+          expiry_date : expiry_date,
+        }),
+        success : function(response){
+          console.log(response)
+          
+          if (response['status'] == "1"){
+              swal({
+                title:"Coupon added successfully",
+                icon:"success",
+                button:"Ok",
+                closeOnClickOutside: false,
+              }).then(function(){
+                location.href = "/admin_panel/coupons";
+              })
+          }    
+          else if(response['status'] == "0"){ 
+              swal({
+                title:response["msg"],
+                icon:"warning",
+                button:"Ok",
+                closeOnClickOutside: false,
+              }).then(function(){
+                // location.reload();
+              })
+          }  
+        }
+      });
+    }
+  }
+
+  $('#coupon_code').keyup(function(){
+    $('#coupon_code_err').hide();
+  })
+
+  $('#discount').keyup(function(){
+    $('#discount_err').hide();
+    $('#discount_invalid_err').hide();
+  })
+
+  $('#expiry_date').change(function(){
+    $('#expiry_date_err').hide();
+  })
+
+</script>
+
+<script>
+  function set_update_data(id, coupon_code,discount,expiry_date){
+    var id = id
+    var coupon_code = coupon_code
+    var discount = discount
+    var expiry_date = expiry_date
+    $('#edit_id').val(id)
+    $('#coupon_code1').val(coupon_code)
+    $('#discount1').val(discount)
+    $('#expiry_date1').val(expiry_date)
+  }
+  // to Update new COUPON
+  function update(){
+    var id = $("#edit_id").val();
+    coupon_code = $("#coupon_code1").val();
+    discount = $("#discount1").val();
+    expiry_date = $("#expiry_date1").val();
+
+    if (coupon_code == ""){
+      $('#coupon_code_err1').show();
+    }
+    else if (discount== ""){
+      $('#discount_err1').show();
+    }
+    else if(discount<0 || discount>100){
+      $('#discount_invalid_err1').show();
+    }
+    else if (expiry_date == ""){
+      $('#expiry_date_err1').show();
+    }
+    else{
+
+      $.ajax({
+        method : "POST",
+        url : "/admin_panel/api/coupon_edit",
+        contentType: "application/json",
+        data : JSON.stringify({
+          id : id,
+          coupon_code : coupon_code,
+          discount : discount,
+          expiry_date : expiry_date,
+        }),
+        success : function(response){
+          console.log(response)
+          
+          if (response['status'] == "1"){
+              swal({
+                title:"Coupon updated successfully",
+                icon:"success",
+                button:"Ok",
+                closeOnClickOutside: false,
+              }).then(function(){
+                location.href = "/admin_panel/coupons";
+              })
+          }    
+          else if(response['status'] == "0"){ 
+              swal({
+                title:response["msg"],
+                icon:"warning",
+                button:"Ok",
+                closeOnClickOutside: false,
+              }).then(function(){
+                // location.reload();
+              })
+          }  
+        }
+      });
+    }
+  }
+
+  $('#coupon_code1').keyup(function(){
+    $('#coupon_code_err1').hide();
+  })
+
+  $('#discount1').keyup(function(){
+    $('#discount_err1').hide();
+    $('#discount_invalid_err1').hide();
+  })
+
+  $('#expiry_date1').change(function(){
+    $('#expiry_date_err1').hide();
+  })
+
+</script>
+
+<script type="text/javascript">
+
+  // detete coupon
+  function delete_coupon(id){
+    swal({
+    title: "Are you sure?",
+    text: "Are you sure you want to delete this coupon?",
+    icon: "warning",
+    buttons: true,
+    closeOnClickOutside: false,
+    dangerMode: true,
+    }).then((willDelete) => {
+      if (willDelete) {
+        $.ajax({
+          method : "POST",
+          url : "/admin_panel/api/coupon_delete",
+          contentType: "application/json",
+          data : JSON.stringify({
+            id:id,
+          }),
+          success : function(response){
+            console.log(response)
+            
+            if (response['status'] == "1"){
+                swal({
+                  title:"Coupon deleted successfully",
+                  icon:"success",
+                  button:"Ok",
+                  closeOnClickOutside: false,
+                }).then(function(){
+                  location.reload();
+                })
+            }    
+            else if(response['status'] == "0"){ 
+                swal({
+                  title:response["msg"],
+                  icon:"warning",
+                  button:"Ok",
+                  closeOnClickOutside: false,
+                }).then(function(){
+                  // location.reload();
+                })
+            }  
+          }
+        });   
+      }
+    });
+  }
+
+</script>
+
+{% endblock %}
+

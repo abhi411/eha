@@ -1,0 +1,87 @@
+{% extends "eha_app/pages/base.html" %}
+{% load static %}
+
+{% block title %} EHA - ENVIRONMENTAL HEALTH ANALYTICS {% endblock %}
+
+
+{% block content %}
+
+
+    <!-- ======= PRODUCTS Section ======= -->
+    <section id="products" class="about m-t-100">
+      <div class="container">
+
+        <div class="section-title">
+          
+          <h4 class="pollutant-title">Air Pollutant Information:</h4>
+          <h2>Particulate Matter</h2>
+        </div>
+        <div class="row  justify-content-md-center">
+          <!-- <div class="col-lg-6 order-1 order-lg-2">
+            <img src="{% static 'assets/img/about.jpg' %}" class="img-fluid" alt="">
+          </div> -->
+          <div class="col-lg-10 pt-4 pt-lg-0 order-2 order-lg-1 content">
+            <ul style="list-style: disc;" class="m-3">
+              <li>
+                <h4 class="text-green"> What is PM?</h4>
+                <p>PM stands for particulate matter, which refers to solid particles or liquid droplets found in the air. PM is also called particle pollution. PM is a mixture of many substances with different properties. Some particles, such as dust, dirt, soot, or smoke, are large or dark enough to be seen with the naked eye. Others are so small they can only be detected using an electron microscope.</p>
+              </li>
+
+              <li>
+                <h4 class="mt-5 text-green">  Size categories of PM:</h4>
+                <p>Size categories of PM are :</p>
+                <ul style="list-style: disc; margin-left: 60px;">
+                  <li>
+                    <p><b>PM<sub>2.5</sub> :</b> Particles in the air with diameters that are generally 2.5 micrometers and smaller. Howsmall is 2.5 micrometers? Think about a single hair from your head. The average human hair is about 70 micrometers in diameter – making it 30 times larger than the largest fine particle.</p>
+                  </li>
+                  <li>
+                    <p><b>PM<sub>10</sub> : </b>Particles in the air with diameters that are generally 10 micrometers and smaller. PM<sub>10</sub> includes all PM<sub>2.5</sub> particles as well as larger particles in the air. </p>
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <h4 class="mt-5 text-green">  What are the sources of PM into the air?</h4>
+                <p>Particles in the air can be made up of hundreds of different chemicals and come in many sizes and shapes. Some are emitted directly from a source, such as industrial smokestacks, power plants, industrial boilers, cement manufacturing, construction sites, unpaved roads, fields, or fires. Most particles form in the atmosphere as a result of complex reactions of chemicals such as sulfur dioxide </p>
+                </li>
+              <li>
+                <h4 class="mt-5 text-green">  What are the harmful effects of PM?</h4>
+                <p>Particulate matter contains microscopic solids or liquid droplets that are so small that they can be inhaled and cause serious health problems, especially over long time periods of exposure. The size of particles is directly linked to their potential for causing health problems. Particles less than 2.5 micrometers in diameter, also known as PM<sub>2.5</sub> or “fine” particles, pose the greatest risk to health because they can be inhaled deeply into your lungs and some may even get into your bloodstream and have effects on many systems in the body. Particles less than 10 micrometers in diameter can also be inhaled and cause serious health problems, but generally aren't inhaled as deeply into the lungs. </p>
+
+                <p>Exposure to such particles can affect both your lungs and your heart. Numerous scientific studies have linked particle pollution exposure to a variety of problems, including:</p>
+                <ul style="list-style: disc; margin-left: 60px;">
+                  <li>Premature death in people with heart or lung disease</li>
+                  <li>Nonfatal heart attacks</li>
+                  <li>Irregular heartbeat</li>
+                  <li>Aggravated asthma</li>
+                  <li>Decreased lung function and lung function growth</li>
+                  <li>Increased respiratory symptoms, such as irritation of the airways, coughing or difficulty breathing</li>
+                </ul>
+                <p>People with heart or lung diseases, children, and older adults are the most likely to be most sensitive toand affected by exposure to PM<sub>2.5</sub> and PM<sub>10</sub>. </p>
+              </li>
+              <li>
+                <h4 class="mt-5 text-green">  Environmental Effects: Visibility impairment and environmental damage</h4>
+                <p>PM<sub>2.5</sub>, also called fine particles, is the main cause of reduced visibility due to haze in many parts of the United States, including many national parks and wilderness areas.</p>
+                <p>Particles, especially PM<sub>2.5</sub>, can be carried over long distances by wind and then settle on ground or water. Depending on the chemical composition of the particles, the effects of this settling may include:</p>
+                <ul style="list-style: disc; margin-left: 60px;">
+                  <li>Making lakes and streams acidic</li>
+                  <li>Changing the nutrient balance in coastal waters and large river basins</li>
+                  <li>Depleting the nutrients in soil</li>
+                  <li>Damaging sensitive forests and farm crops</li>
+                  <li>Affecting the diversity of ecosystems</li>
+                  <li>Contributing to acid rain effects</li>
+                </ul>
+                <p>The US Environmental Protection Agency regulates emissions of substances that form PM in the air. </p>
+              </li>
+            </ul>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+    <!-- End PRODUCTS Section -->
+
+
+   
+
+{% endblock %}

@@ -1,0 +1,187 @@
+{% extends "eha_app/pages/base.html" %}
+{% load static %}
+
+{% block title %} EHA - ENVIRONMENTAL HEALTH ANALYTICS {% endblock %}
+
+{% block content %}
+<!-- ======= Contact Section ======= -->
+<section id="contact" class="contact m-t-100">
+  <div class="container">
+
+    <div class="section-title">
+      <h2>Create Account</h2>
+    </div>
+
+    <div class="row justify-content-md-center">
+      <div class="col-lg-6 mt-5 mt-lg-0 d-flex align-items-stretch">
+        <form action="" role="form" class="php-email-form">
+
+          <div class="row">
+            <div class="form-group col-6">
+              <label for="firstname">First Name</label>
+              <input type="text" name="firstname" class="form-control" id="firstname"  />
+              <small class="err-msg" id="firstname_err">Please enter your first name</small>
+            </div>
+
+            <div class="form-group col-6">
+              <label for="lastname">Your Name</label>
+              <input type="text" name="lastname" class="form-control" id="lastname"  />
+              <small class="err-msg" id="lastname_err">Please enter your last name</small>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="name">Your Email</label>
+            <input type="email" class="form-control" name="email" id="email" /> 
+            <small class="err-msg" id="email_err">Please enter email</small>  
+            <small class="err-msg" id="email_invalid_err">Invalid email</small>         
+          </div>
+
+          <div class="form-group">
+            <label for="contact_no">Contact Phone Number</label>
+            <input type="text" class="form-control" name="contact_no" id="contact_no" oninput="this.value = this.value.replace(/[^0-9.-]/g, '').replace(/(\..*)\./g, '$1');"  maxlength="14"/>            
+            <small class="err-msg" id="mobile_err">Please enter valid mobile number</small>
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" name="password" id="password" />
+            <small class="err-msg" id="password_err">Please enter password</small>
+          </div>
+
+          <div class="form-group">
+            <label for="password1">Confirm Password</label>
+            <input type="password" class="form-control" name="password1" id="password1" />
+            <small class="err-msg" id="re_password_err">Please re-enter password</small>
+            <small class="err-msg" id="re_password_valid_err">Password should match</small>
+          </div>
+
+          <div class="mb-3">
+            <div class="loading">Loading</div>
+            <div class="sent-message">Your message has been sent. Thank you!</div>
+          </div>
+          <div style="margin-bottom:10px;">
+            <input type="checkbox" checked="checked" id="agree" style="height:auto; padding-right:5px;">
+			I agree to <a href="#" rel=" noopener noreferrer">Terms of Use</a> and <a href="#" rel=" noopener noreferrer">Privacy Policy</a>
+                   
+		  </div>
+          <div class="text-center">
+            <button type="button" class="btn btn-success" onclick="create_customer()">Signup</button>
+          </div>
+		  <div class="text-center">
+            <hr>
+            <p>Already have account? <a href="{% url 'signin' %}">Signin</a></p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End Contact Section -->
+
+<script type="text/javascript">
+function create_customer(){
+    var emailfilter = /^\b[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b$/i
+
+    firstname = $("#firstname").val();
+    lastname = $("#lastname").val();
+    email = $("#email").val();
+    contact_no = $("#contact_no").val();
+    password = $("#password").val();
+    password1 = $("#password1").val();
+    agree = false;
+	var checkBox = document.getElementById("agree");
+
+	// If the checkbox is checked, display the output text
+	if (checkBox.checked == true){
+		agree = true;
+	} else {
+		agree = false;
+	}
+
+    if (firstname == ""){
+      $('#firstname_err').show();
+    }
+    else if (lastname == ""){
+      $('#lastname_err').show();
+    }
+    else if (email== ""){
+      $('#email_err').show();
+    }
+    else if(! emailfilter.test(email)){ 
+      $("#email_invalid_err").show(); 
+    } 
+    else if (contact_no != "" && contact_no.length<10){
+      $('#mobile_err').show();
+    }
+    else if (password== ""){
+      $('#password_err').show();
+    }
+    else if (password1== ""){
+      $('#re_password_err').show();
+    }
+    else if (password1 != password){
+      $('#re_password_valid_err').show();
+    }
+    else if (agree == false){
+    }
+    else{
+
+      $.ajax({
+        method : "POST",
+        url : "/api/signup",
+        contentType: "application/json",
+        data : JSON.stringify({
+          firstname : firstname,
+          lastname : lastname,
+          email : email,
+          contact_no : contact_no,
+          password : password,
+        }),
+        success : function(response){
+          console.log(response)
+          
+          if (response['status'] == "1"){
+              swal({
+                title:"You have signed up successfully",
+                icon:"success",
+                button:"Ok",
+                closeOnClickOutside: false,
+              }).then(function(){
+                location.href = "/";
+              })
+          }    
+          else if(response['status'] == "0"){ 
+              swal({
+                title:response["msg"],
+                icon:"warning",
+                button:"Ok",
+                closeOnClickOutside: false,
+              }).then(function(){
+                // location.reload();
+              })
+          }  
+        }
+      });
+    }
+}
+
+$('#name').keyup(function(){
+    $('#name_err').hide();
+});
+$('#email').keyup(function(){
+    $('#email_err').hide();
+    $('#email_invalid_err').hide();
+});
+$('#contact_no').keyup(function(){
+    $('#mobile_err').hide();
+});
+$('#password').keyup(function(){
+    $('#password_err').hide();
+});
+$('#password1').keyup(function(){
+    $('#re_password_err').hide();
+    $('#re_password_valid_err').hide();
+});
+</script>
+{% endblock %}

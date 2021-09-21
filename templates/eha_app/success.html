@@ -1,0 +1,35 @@
+{% extends "eha_app/pages/base.html" %}
+{% load static %}
+
+{% block title %} EHA - SHOP {% endblock %}
+
+{% block content %}
+
+<!-- ======= shop-item Section ======= -->
+<section class="team section-bg m-t-100">
+  <div class="container">
+
+    <div class="row justify-content-md-center" style="min-height: 200px;">
+      <div class="col-lg-10 col-md-10 d-flex align-items-stretch">
+        <div class="card card-shop-item">
+          <div class="card-body text-center">
+            <h3>
+              <i class="fa fa-cc-mastercard" aria-hidden="true" style="font-size: 60px; color: #4caf504d;"></i>
+              <br>
+              Your payment succeeded.
+            </h3>
+            <br>
+            <a href="{% url 'purchase_history' %}">View Purchase History</a>
+            <br>
+          </div><hr>
+          <div class="card-body text-center">
+            <a href="{% url 'shop' %}" class="btn btn-pri">Keep Shopping</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End Section -->
+
+{% endblock %}

@@ -1,0 +1,52 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+{% include "admin_panel/pages/header.html" %}
+
+<title>{% block title %}ADMIN - Home{% endblock %}</title>
+
+
+<style type="text/css">
+
+</style>
+{% block style %}{% endblock %}
+</head>
+
+<body>
+{% include "admin_panel/pages/navigation.html" %}
+
+<div class="main-content">
+  <section class="section" style="top:30px;">     
+    <div class="section-body">
+      <div class="row">
+        <div class="col-12">  
+              {% block content %}{% endblock %}
+        </div>
+      </div>
+    </div>
+  </section>
+ </div>
+
+
+
+
+  <!-- General JS Scripts -->
+  <script src="{% static 'admin/assets/js/app.min.js' %}"></script>
+  <!-- DATATABLE JS Libraies -->
+  <script src="{% static 'admin/assets/bundles/datatables/datatables.min.js' %}"></script>
+  <script src="{% static 'admin/assets/bundles/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js' %}"></script>
+  <script src="{% static 'admin/assets/bundles/jquery-ui/jquery-ui.min.js' %}"></script>
+  <!-- Page Specific JS File -->
+  <script src="{% static 'admin/assets/js/page/datatables.js' %}"></script>
+  <!-- Template JS File -->
+  <script src="{% static 'admin/assets/js/scripts.js' %}"></script>
+  <!-- Custom JS File -->
+  <script src="{% static 'admin/assets/js/custom.js' %}"></script>
+  
+{% include "admin_panel/pages/footer.html" %}
+
+</body>
+</html>

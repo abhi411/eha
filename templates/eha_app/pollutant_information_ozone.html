@@ -1,0 +1,42 @@
+{% extends "eha_app/pages/base.html" %}
+{% load static %}
+
+{% block title %} EHA - ENVIRONMENTAL HEALTH ANALYTICS {% endblock %}
+
+
+{% block content %}
+
+
+    <!-- ======= PRODUCTS Section ======= -->
+    <section id="products" class="about m-t-100">
+      <div class="container">
+
+        <div class="section-title">
+          <h4 class="pollutant-title">Air Pollutant Information:</h4>
+            <h2>OZONE</h2>
+          <!-- <h2><span>Air Pollutant Information</span><br><br>OZONE</h2> -->
+        </div>
+        <div class="row  justify-content-md-center">
+          <!-- <div class="col-lg-6 order-1 order-lg-2">
+            <img src="{% static 'assets/img/about.jpg' %}" class="img-fluid" alt="">
+          </div> -->
+          <div class="col-lg-8 pt-4 pt-lg-0 order-2 order-lg-1 content text-center">
+            <div class="mb-5">
+              <a href="/media/pdf/What_is_Ozone.pdf" target="_blank" style="font-size: 18px;
+                  font-weight: 600;">Download Information on Ozone 
+                <i class="fa fa-file-pdf-o" aria-hidden="true" style="color: red;"></i>
+             </a></div>
+            <div>
+              <img src="{% static 'What_is_Ozone-01.jpg' %}" class="img-fluid" style="border: 1px solid #ccc;">
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+    <!-- End PRODUCTS Section -->
+
+
+   
+
+{% endblock %}

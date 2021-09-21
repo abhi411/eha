@@ -1,0 +1,167 @@
+{% extends "admin_panel/pages/base.html" %}
+{% load static %}
+
+{% block title %} EHA - ORDERS ITEMS {% endblock %}
+
+{% block style %}
+<style type="text/css">
+  
+</style>
+{% endblock %}
+
+{% block content %} 
+
+<div class="card card-primary">
+ 
+	
+  <div class="card-body">
+    <div class="row">
+			<div class="card-header">
+			<h4>ORDERS</h4>
+			<a href="{% url 'order-items' %}" class="btn btn-success"><i class="fa fa-angle-double-left"></i></a>
+			</div>
+			
+			<div class="col-12 text-right">
+				
+			   
+			</div>
+			{% if order_item %} 
+			<div class="table-responsive">
+				<div class="text-right"><b>Date :</b> {{date}}</div>
+            	<div class="text-right"><b>Order # :</b> {{order_no}}</div>
+				<h5 id="text">Sold to : {{customer}}</h5>
+				
+				
+                <table class="table table-hover" id="table_items">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Products</th>
+                      <th>Category</th>
+                      <th>Coupon Code</th>
+                      <th>Price</th>
+                      <th>Discount</th>
+                      <th>Amount</th>
+                      
+                      <!-- <th>Address</th> -->
+                      
+                    </tr>
+                  </thead>
+				  <tbody>
+                    {% for item in order_item %}
+					<input type="hidden" id="id" value="{{item.id}}">
+                    <tr>
+                      <td>{{ forloop.counter }}</td>
+                      
+                      <td >{{item.fk_shop_item|safe}}</td>
+					   <td>{{item.fk_shop_item.category}}</td>
+                      <td>{{item.fk_coupon|default_if_none:"--"}}</td>
+					
+                      <td>$ {{item.price}}</td>
+					  {% if item.fk_coupon.discount %}
+                      <td>{{item.fk_coupon.discount}} %</td>
+					  {% else %}
+					  <td> -- </td>
+					  {% endif %}
+                      <td>$ {{item.payment}}</td>
+					  
+                    </tr>
+					{% endfor %}
+					  <tr>
+		              	<th colspan="6" class="text-right"><b>Total : </b></th>
+		              	<th><b>$ {{amount_total}}</b></th>
+		              </tr>
+				 
+                    
+                    
+					 
+					 
+                    
+                  </tbody>
+				  
+				</table>
+				<div class="row">
+					<tr>
+		              	<th id="text-val" colspan="8"><b>Address : {{address}}</th>
+		              </tr>
+					  
+						<input id="text1" name="" type="hidden" value="Sold to : {{customer}}">
+						<input id="text2" name="" type="hidden" value="Address : {{address}}">
+						
+					<a id="dwn-btn" style="margin-left: 10px;" class="btn btn-success btn-sm"> <i id="text" class="fa fa-download" aria-hidden="true"></i></a>
+					<a id="dwn-btn" style="margin-left: 10px;" onclick="send_mail()" href="" class="btn btn-success btn-sm"> <i id="mail" class="fas fa-envelope"></i></a>
+					
+				</div>
+              </div>
+			  {% endif %}
+	  </div>
+</div>
+
+</div>
+
+<script type="text/javascript">
+
+
+function download(filename, text, text1) {
+    var element = document.createElement('a');
+    element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text+"\n"+text1));
+    element.setAttribute('download', filename);
+
+    element.style.display = 'none';
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
+}
+
+// Start file download.
+document.getElementById("dwn-btn").addEventListener("click", function(){
+    // Generate download of User_Details.txt file with some content
+    var text = document.getElementById("text1").value;
+    var text1 = document.getElementById("text2").value;
+    var filename = "Customer_Details.txt";
+    download(filename, text, text1);
+}, false);
+
+
+function send_mail(){
+	var id = $('#id').val();
+	
+	$.ajax({
+        method: "POST",
+        url: "/email_order_details/",
+        data:{
+            "id":id,
+        },
+		success : function(response){
+			console.log(response)
+      
+		  if (response == "error"){
+			swal({ 
+			  title:"Something Wrong",
+			  icon:"warning",
+			  button:"Ok",
+			  closeOnClickOutside: false,
+			})
+		  }    
+		  else{ 
+			  swal({
+				title:"Mail has been send",
+				icon:"success",
+				button:"Ok",
+				closeOnClickOutside: false,
+			  }).then(function(){
+			location.reload();
+			})
+      		  
+          }  
+        }
+	});
+}
+
+
+
+</script>
+{% endblock %}
+	  

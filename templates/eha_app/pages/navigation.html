@@ -1,0 +1,114 @@
+{% load static %}
+
+<!-- ======= Header ======= -->
+<header id="header" class="fixed-top">
+  <div class="container d-flex align-items-center">
+
+    <!-- LOGO -->
+   <!--<h1 class="logo mr-auto"><a href="{% url 'index' %}">EHA</a></h1> -->
+
+   <!-- LOGO with Image -->
+    <a href="{% url 'index' %}" class="logo mr-auto">
+
+      <img src="{% static 'logo_new.png' %}" alt="" class="img-fluid mylogo">
+    </a>
+
+    <!-- NAVIGATION MENU -->
+    <nav class="nav-menu d-none d-lg-block">
+      <ul>
+        <li>
+          <a href="{% url 'index' %}"><!-- <i class="fa fa-home"></i>  -->Home</a>
+        </li>
+
+        <!-- <li>
+          <a href="/#what_we_provide">What We Provide</a>
+        </li>
+
+        <li>
+          <a href="/#about">About Us</a>
+        </li> -->
+
+        <li class="drop-down">
+          <a href="#">Product Information</a>
+          <ul>
+            <li><a href="{% url 'report_details' %}">Report Details</a></li>
+            <li><a href="{% url 'example_report' %}">Example Report</a></li>
+            <li><a href="{% url 'technical_details' %}">Technical Details</a></li>
+          </ul>
+        </li>
+
+        <li class="drop-down"><a href="">Air Pollutant Information</a>
+          <ul>
+            <li><a href="{% url 'pollutant_information_particulate_matter' %}">Particulate Matter</a></li>
+            <li><a href="{% url 'pollutant_information_ozone' %}">Ozone </a></li>
+            <li><a href="{% url 'pollutant_information_nitrogen_dioxide' %}">Nitrogen Dioxide</a></li>
+          </ul>
+        </li>
+
+        <li
+          {% if '/shop' == request.path %}
+            class="active"
+          {% endif %}
+        >
+          <a href="{% url 'shop' %}">Shop</a>
+        </li>
+        <li><a href="{% url 'contact' %}">Contact</a></li>
+
+        <li>
+          <a href="{% url 'cart' %}">Cart <sup class="badge badge-success" id="cart_id" style="display: none;"></sup></a>
+        </li>
+
+      </ul>
+    </nav><!-- .nav-menu -->
+
+
+    <!-- To check whether user is logged in or not -->
+    {% if customer %}
+    <!-- <span class="get-started-btn signed-in scrollto nav-menu nav-menu1">
+      <ul>
+        
+        <li class="drop-down"><a href="">Hi {{customer.name}}</a>
+          <ul>
+            <li><a href="#">Account</a></li>
+            <li><a href="#">Puchase History</a></li>
+            <li><a href="#">Logout 
+            <i class="fa fa-sign-out" style="padding-left: 10px;"></i></a></li>
+          </ul>
+        </li>
+      </ul>
+    </span> -->
+
+    <span class="get-started-btn get-started-btn1 signed-in scrollto">
+      <div class="dropdown" style="display: inline;">
+        <a class="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Signed in as {{customer.firstname}}
+        </a>
+        <div class="dropdown-menu drop-down-account" aria-labelledby="dropdownMenuButton">
+          <a class="dropdown-item" href="{% url 'profile' %}">Profile</a>
+          <a class="dropdown-item" href="{% url 'purchase_history' %}">Purchase History</a>
+          <div class="dropdown-divider"></div>
+          <!-- Logout menu -->
+          <a class="dropdown-item" href="{% url 'signout' %}">Sign Out 
+            <i class="fa fa-sign-out" style="padding-left: 10px;"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+    <!-- If usser is not logged in show sign in button -->
+    {% else %}
+    <span class="get-started-btn get-started-btn1 signed-in scrollto">
+        <a href="{% url 'signin' %}" class="">Create Account</a>
+    </span>
+
+    {% endif %}
+
+  </div>
+</header>
+<!-- End Header -->
+
+<script type="text/javascript">
+  function openTab(th)
+  {
+      window.open(th.name,'_blank');
+  }
+</script>

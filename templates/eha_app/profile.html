@@ -1,0 +1,75 @@
+{% extends "eha_app/pages/base.html" %}
+{% load static %}
+
+{% block title %} EHA - ENVIRONMENTAL HEALTH ANALYTICS {% endblock %}
+
+{% block content %}
+<!-- ======= Account Section ======= -->
+<section class="contact m-t-100">
+  <div class="container">
+    <div class="section-title">
+      <h2>Profile & settings</h2>
+    </div>
+    <div class="row justify-content-md-center">
+      <div class="col-lg-6 mt-5 mt-lg-0">
+        <div class="card">
+          <div class="hover-overlay ripple text-center" data-mdb-ripple-color="light">
+            <!-- if Customer has profile picture -->
+            {% if customer.profile_img %}
+              <img  src="{{customer.profile_img.url}}" class="profile-pic">
+            {% else %}
+            <!-- else show default image -->
+              <img  src="{% static 'user.png' %}" class="profile-pic">
+            {% endif %}
+          </div>
+          <div class="card-body">
+            <!-- CUSTOME R name -->
+            <h3 class="card-title text-center">{{customer.firstname}} {{ customer.lastname|default_if_none:"" }}</h3>
+          </div>
+          <hr>
+          <div class="card-body">
+              <div class="info info1">
+
+                <div class="email">
+                  <i class="icofont-envelope"></i>
+                  <h4>Email:</h4>
+                  <p>{{customer.email}}</p>
+                </div>
+
+                <div class="phone">
+                  <i class="icofont-phone"></i>
+                  <h4>Contact:</h4>
+                  <p>
+                    {% if customer.contact_no %}
+                      {{customer.contact_no}}
+                    {% else %}
+                      <span class="no-data badge badge-secondary">Not available</span>
+                    {% endif %}</p>
+                </div>
+
+                <div class="address">
+                  <i class="icofont-google-map"></i>
+                  <h4>Address:</h4>
+                  <p>
+                    {% if customer.address %}
+                      {{customer.address}}
+                    {% else %}
+                      <span class="no-data badge badge-secondary">Not available</span>
+                    {% endif %}
+                  </p>
+                </div>
+              </div>
+
+           
+            <div class="text-right">
+              <a href="{% url 'profile_edit' %}" class="btn btn-success btn-pri">Edit profile</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End Section -->
+
+{% endblock %}

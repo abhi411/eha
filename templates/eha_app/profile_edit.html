@@ -1,0 +1,349 @@
+{% extends "eha_app/pages/base.html" %}
+{% load static %}
+
+{% block title %} EHA - ENVIRONMENTAL HEALTH ANALYTICS {% endblock %}
+
+{% block content %}
+<!-- ======= Account Section ======= -->
+<section class="contact m-t-100">
+  <div class="container">
+    <div class="section-title">
+      <h2>Profile & settings</h2>
+    </div>
+    <div class="row justify-content-md-center">
+      <div class="col-lg-12 mt-5 mt-lg-0">
+        <!-- TAB menu  -->
+         <ul class="nav nav-tabs" id="myTab" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Edit Profile</a>
+          </li>
+          <!-- <li class="nav-item">
+            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Profile Picture</a>
+          </li> -->
+          <li class="nav-item">
+            <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Change Password</a>
+          </li>
+        </ul>
+        <!-- ENS TAB MENU -->
+        <div class="tab-content" id="myTabContent">
+
+          <!-- TAB CONTENT for EDIT PROFILE -->
+          <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+            <div class="row justify-content-md-center">
+              <div class="col-lg-6 mt-5 d-flex align-items-stretch">
+                <form action="" role="form" class="php-email-form">
+
+                  <div class="row">
+                    <div class="form-group col-6">
+                      <label for="firstname">First Name</label>
+                      <input type="text" name="firstname" class="form-control" id="firstname"  value="{{customer.firstname}}" />
+                      <small class="err-msg" id="firstname_err">Please enter your first name</small>
+                    </div>
+
+                    <div class="form-group col-6">
+                      <label for="lastname">Your Name</label>
+                      <input type="text" name="lastname" class="form-control" id="lastname"  value="{{customer.lastname|default_if_none:''}}" />
+                      <small class="err-msg" id="lastname_err">Please enter your last name</small>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="name">Your Email</label>
+                    <input type="email" class="form-control" name="email" id="email" disabled="true" value="{{customer.email}}" />        
+                  </div>
+
+                  <div class="form-group">
+                    <label for="contact_no">Contact Phone Number</label>
+                    <input type="text" class="form-control" name="contact_no" id="contact_no" oninput="this.value = this.value.replace(/[^0-9.-]/g, '').replace(/(\..*)\./g, '$1');"  maxlength="14" value="{{customer.contact_no}}" /> 
+                               
+                    <small class="err-msg" id="mobile_err">Please enter valid mobile number</small>        
+                  </div>
+
+                  <div class="form-group">
+                    <label for="address">Address</label>
+                    <textarea class="form-control" id="address">{{customer.address}}</textarea>
+                    <small class="err-msg" id="address_err">Please enter password</small>
+                  </div>
+
+                  <div class="mb-3">
+                    <div class="loading">Loading</div>
+                    <div class="sent-message">Your message has been sent. Thank you!</div>
+                  </div>
+                  <div class="text-center">
+                    <button type="button" class="btn btn-success" onclick="update_customer()">Update</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <!-- END TAB -->
+
+
+          <!-- TAB CONTENT for PROFILE PICTURE -->
+          <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+            
+            <div class="row justify-content-md-center">
+              <div class="col-lg-6 mt-5 d-flex align-items-stretch">
+                <form action="" role="form" class="php-email-form">
+
+                  <div class="div-profile-pic">
+                    <!-- if Customer has profile picture -->
+                    {% if customer.profile_img %}
+                      <img id="output" src="{{customer.profile_img.url}}" class="profile-pic">
+                    {% else %}
+                    <!-- else show default image -->
+                      <img id="output" src="{% static 'user1.png' %}" class="profile-pic">
+                    {% endif %}
+                  </div>
+
+                  <!-- to upload file -->
+                  <div>
+                    <input type="file"  accept="image/*" name="image" id="profile_img"  onchange="loadFile(event)" style="display: none;">
+                    <label class="btn btn-light" for="profile_img">Upload Image</label>
+                  </div>
+
+                  <!-- SCRIPT to show uploaded image -->
+                  <script>
+                  var loadFile = function(event) {
+                    var image = document.getElementById('output');
+                    image.src = URL.createObjectURL(event.target.files[0]);
+                  };
+                  </script>
+
+                  <div class="text-center">
+                    <button type="button" class="btn btn-success" onclick="update_picture()">Update</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <!-- END TAB -->
+
+
+          <!-- TAB CONTENT for CHANGE PASSWORD -->
+          <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+            <div class="row justify-content-md-center">
+              <div class="col-lg-6 mt-5 d-flex align-items-stretch">
+                <form action="" role="form" class="php-email-form">
+
+                  <div class="form-group">
+                    <label for="old_pwd">Old Password</label>
+                    <input type="password" class="form-control" id="old_pwd" />
+                    <small class="err-msg" id="old_pwd_err">Please enter old password.</small>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="new_pwd">New Password</label>
+                    <input type="password" class="form-control" id="new_pwd" />
+                    <small class="err-msg" id="new_pwd_err">Please enter new password</small>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="re_new_pwd">Confirm Password</label>
+                    <input type="password" class="form-control" id="re_new_pwd" />
+                    <small class="err-msg" id="re_new_pwd_err">Please re-enter password</small>
+                    <small class="err-msg" id="re_new_pwd_valid_err">Password should match</small>
+                  </div>
+
+                  <div class="text-center">
+                    <button type="button" class="btn btn-success" onclick="change_password()">Update</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          <!-- END TAB -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End Section -->
+
+<!-- JAVASCRIPT code to UPDATE PROFILE data -->
+<script type="text/javascript">
+function update_customer(){
+
+    firstname = $("#firstname").val();
+    lastname = $("#lastname").val();
+    contact_no = $("#contact_no").val();
+    address = $("#address").val();
+
+    if (firstname == ""){
+      $('#firstname_err').show();
+    }
+    else if (lastname == ""){
+      $('#lastname_err').show();
+    }
+    else if (contact_no != "" && contact_no.length<10){
+      $('#mobile_err').show();
+    }
+    else{
+
+      $.ajax({
+        method : "POST",
+        url : "/api/profile_edit",
+        contentType: "application/json",
+        data : JSON.stringify({
+          id : '{{customer.id}}',
+          firstname : firstname,
+          lastname : lastname,
+          contact_no : contact_no,
+          address : address,
+        }),
+        success : function(response){
+          console.log(response)
+          
+          if (response['status'] == "1"){
+              swal({
+                title:"Profile updated successfully",
+                icon:"success",
+                button:"Ok",
+                closeOnClickOutside: false,
+              }).then(function(){
+				location.href = "/profile";
+                // location.reload();
+              })
+          }    
+          else if(response['status'] == "0"){ 
+              swal({
+                title:response["msg"],
+                icon:"warning",
+                button:"Ok",
+                closeOnClickOutside: false,
+              }).then(function(){
+                // location.reload();
+              })
+          }  
+        }
+      });
+    }
+}
+
+$('#name').keyup(function(){
+    $('#name_err').hide();
+});
+$('#contact_no').keyup(function(){
+    $('#mobile_err').hide();
+});
+$('#address').keyup(function(){
+    $('#address_err').hide();
+});
+</script>
+
+<!-- To UPLOAD PROFILE PICTURE -->
+<script type="text/javascript">
+function update_picture(){
+
+  var profile_img = document.getElementById("profile_img").files[0];  
+  // alert(document.getElementById("file").files.length) 
+  var formImage = new FormData();
+  formImage.append("profile_img", profile_img)
+
+  if(document.getElementById("profile_img").files.length>0){
+    $.ajax({
+        method : "POST",
+        url : "/api/profile_pic_edit",
+        processData : false,
+        contentType : false,
+        cache: false,
+        data : formImage,
+        success : function(response){
+          // console.log(response)
+          if (response['status'] == "1"){
+            swal({
+              title:"Profile picture updated successfully",
+              icon:"success",
+              button:"Ok",
+              closeOnClickOutside: false,
+            }).then(function(){
+              // location.reload();
+            })
+          }    
+          else if(response['status'] == "0"){ 
+              swal({
+                title:response["msg"],
+                icon:"warning",
+                button:"Ok",
+                closeOnClickOutside: false,
+              }).then(function(){
+                // location.reload();
+              })
+          } 
+        } 
+      });
+    }
+  }
+</script>
+
+<!-- SCRIPT to CHANGE PASSWORD -->
+<script type="text/javascript">
+function change_password() {
+
+    var old_pwd = $("#old_pwd").val();
+    var new_pwd = $("#new_pwd").val();
+    var re_new_pwd = $("#re_new_pwd").val();
+
+    if (old_pwd == ""){
+      $('#old_pwd_err').show();
+    }
+    else if (new_pwd== ""){
+      $('#new_pwd_err').show();
+    }
+    else if (re_new_pwd== ""){
+      $('#re_new_pwd_err').show();
+    }
+    else if (re_new_pwd != new_pwd){
+      $('#re_new_pwd_valid_err').show();
+    }
+    else{
+      $.ajax({
+        method : "POST",
+        url : "/api/change_password",
+        contentType: "application/json",
+
+        data : JSON.stringify({
+          old_password : old_pwd,
+          new_password : new_pwd,
+        }),
+        success : function(response){
+          // console.log(response)
+          
+          if (response['status'] == "1"){
+            swal({
+              title:"Password updated successfully",
+              icon:"success",
+              button:"Ok",
+              closeOnClickOutside: false,
+            }).then(function(){
+				location.href = "/profile";
+                // location.reload();
+            })
+          }    
+          else if(response['status'] == "0"){ 
+              swal({
+                title:response["msg"],
+                icon:"warning",
+                button:"Ok",
+                closeOnClickOutside: false,
+              }).then(function(){
+                // location.reload();
+              })
+          }  
+        }
+      });
+    }
+}
+
+$('#old_pwd').keyup(function(){
+    $('#old_pwd_err').hide();
+});
+$('#new_pwd').keyup(function(){
+    $('#new_pwd_err').hide();
+});
+$('#re_new_pwd').keyup(function(){
+    $('#re_new_pwd_err').hide();
+    $('#re_new_pwd_valid_err').hide();
+});
+</script>
+{% endblock %}

@@ -1,0 +1,221 @@
+{% extends "admin_panel/pages/base.html" %}
+{% load static %}
+
+{% block title %} EHA - PRODUCTS - Edit {% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'editor/css/froala_editor.css' %}">
+  <style type="text/css">
+    
+.fr-box.fr-basic .fr-wrapper {
+    background: #FFF;
+    border: 1px solid #CCCCCC;
+    border-bottom-color: #cccccc !important;
+    top: 0;
+    left: 0;
+    border-radius: 0px 0px 10px 10px !important;
+}
+  </style>
+{% endblock %}
+
+{% block content %}
+
+<div class="card card-primary">
+   <div class="card-header">
+      <h4>PRODUCTS</h4>
+   </div>
+   <div class="card-body">
+      <div class="row">
+         <div class="offset-md-3 col-md-6">
+            <p class=" form-title">Edit product information</p>
+            <hr>
+         </div>
+
+         <div class="offset-md-3 col-md-6 form-group">
+            <label for="title">Title<span class="mandatory">*</span></label>
+            <div id="editor">
+              <div id='edit1'>
+              </div>
+            </div>
+            <small class="err-msg" id="title_err">Please enter product title</small>
+          </div>
+
+         <div class="offset-md-3 col-md-6 form-group">
+            <label for="title">Description<span class="mandatory">*</span></label>
+            <div id="editor1">
+              <div id='edit2'>
+              </div>
+            </div>
+            <small class="err-msg" id="description_err">Please enter description</small>
+          </div>
+
+
+         <div class="offset-md-3 col-md-6 form-group">
+            <label for="price">Price<span class="mandatory">*</span></label>
+            <input id="price" type="number" class="form-control" name="price" tabindex="1" required="" autofocus=""  value="{{shop_item.price}}"  onKeyPress="if(this.value.length==10) return false;">
+            <small class="err-msg" id="price_err">Please enter product price</small>
+          </div>
+
+         <!-- <div class="offset-md-3 col-md-6 form-group"> -->
+            <!-- <label for="category">Category<span class="mandatory">*</span></label> -->
+            <!-- <input id="category" type="text" class="form-control" name="category" tabindex="1" required="" autofocus=""  value="{{shop_item.category}}"> -->
+            <!-- <small class="err-msg" id="category_err">Please enter product category</small> -->
+          <!-- </div> -->
+      
+      <div class="offset-md-3 col-md-6 form-group">
+            <label for="category">Category<span class="mandatory">*</span></label>
+
+            <select class="form-control" id="category">
+              <option value="" selected disabled>Select category</option>   
+              <option value = "Newsletters" 
+        {% if shop_item.category == 'Newsletters' %} 
+        selected
+        {% endif %}>Newsletters</option>
+              <option value = "Reports"  
+        {% if shop_item.category == 'Reports' %} 
+        selected
+        {% endif %}>Reports</option>
+            </select>
+
+            <!-- <input id="category" type="text" class="form-control" name="category" tabindex="1" required="" autofocus=""> -->
+            <small class="err-msg" id="category_err">Please enter product category</small>
+          </div>
+            
+          {% if shop_item.image %}
+         <div class="offset-md-3 col-md-6 form-group">
+            <img src="{{shop_item.image.url}}" style="width: 100%;">
+          </div>
+          {% endif %}
+
+
+         <div class="offset-md-3 col-md-6 form-group">
+            {% if shop_item.image %}
+            <label for="image" class="upload-file">Change image<span class="mandatory">*</span></label>
+            {% else %}
+            <label for="image" class="upload-file">Upload image<span class="mandatory">*</span></label>
+            {% endif %}
+            <input type="file" name="image" id="image" accept="image/*" style="display: none;"><br>
+            <small class="err-msg" id="image_err">Please select image for product</small>
+          </div>
+
+         <div class="offset-md-3 col-md-6 form-group text-right">
+          <a href="{% url 'shop-items' %}" class="btn btn-warning">Cancel</a>
+          <button class="btn btn-success" onclick="update()">Update</button>
+         </div>
+
+      </div>
+   </div>
+</div>
+
+
+<script>
+  function update(){
+    id = '{{shop_item.id}}'
+    title = $('#edit1').find('.fr-view').html()
+    description = $('#edit2').find('.fr-view').html()
+    price = $("#price").val();
+    category = $("#category").val();
+
+    if (title == "" || title == "<p><br></p>"){
+      $('#title_err').show();
+      setTimeout(function() {
+          $('#title_err').fadeOut('slow');
+      }, 3000);
+    }
+    else if (description== "" || description == "<p><br></p>"){
+      $('#description_err').show();
+      setTimeout(function() {
+          $('#description_err').fadeOut('slow');
+      }, 3000);
+    }
+    else if (price == ""){
+      $('#price_err').show();
+    }
+    else if (category == ""){
+      $('#category_err').show();
+    }
+    else{
+      var image = document.getElementById("image").files[0];   
+      var formData = new FormData();
+      formData.append("id", id)
+      formData.append("title", title)
+      formData.append("description", description)
+      formData.append("price", price)
+      formData.append("category", category)
+      formData.append("image", image)
+
+      $.ajax({
+        method : "POST",
+        url : "/admin_panel/api/shop_item_edit",
+        processData : false,
+        contentType : false,
+        cache: false,
+        data : formData,
+        success : function(response){
+          console.log(response)
+          
+          if (response['status'] == "1"){
+              swal({
+                title:"Product updated successfully",
+                icon:"success",
+                button:"Ok",
+                closeOnClickOutside: false,
+              }).then(function(){
+                location.href = "/admin_panel/shop-items";
+              })
+          }    
+          else if(response['status'] == "0"){ 
+              swal({
+                title:response["msg"],
+                icon:"warning",
+                button:"Ok",
+                closeOnClickOutside: false,
+              }).then(function(){
+                // location.reload();
+              })
+          }  
+        }
+      });
+    }
+  }
+
+  $('#title').keyup(function(){
+    $('#title_err').hide();
+  })
+
+  $('#description').keyup(function(){
+    $('#description_err').hide();
+  })
+
+  $('#price').keyup(function(){
+    $('#price_err').hide();
+  })
+
+  $('#category').keyup(function(){
+    $('#category_err').hide();
+  })
+</script>
+<script type="text/javascript" src="{% static 'editor/js/froala_editor.min.js' %}"></script>
+<script>
+  // A $( document ).ready() block.
+    $( document ).ready(function() {
+    
+      new FroalaEditor("#edit1", {
+        toolbarButtons: [ ['bold', 'italic','subscript', 'superscript'] ]
+      })
+
+      new FroalaEditor("#edit2", {
+        toolbarButtons: [ ['bold', 'italic','subscript', 'superscript'] ]
+      })
+    });
+
+    $( window ).load(function() {
+      $(".fr-second-toolbar").remove();
+      $('#edit1').find('.fr-view').html('{{shop_item.title|safe}}')
+      $('#edit2').find('.fr-view').html('{{shop_item.description|safe}}')
+     $('#edit1').find('.fr-wrapper').first().removeClass("show-placeholder");
+     $('#edit2').find('.fr-wrapper').first().removeClass("show-placeholder");
+    });
+</script>
+{% endblock %}
+

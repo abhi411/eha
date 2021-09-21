@@ -1,0 +1,469 @@
+{% extends "eha_app/pages/base.html" %}
+{% load static %}
+
+{% block title %} EHA - SHOP {% endblock %}
+
+{% block content %}
+
+
+<!-- ======= shop-item Section ======= -->
+<section class="team section-bg m-t-100" id="step1">
+  <div class="container">
+    <div class="section-title">
+      <h2>CART</h2>
+    </div>
+    {% if cart_list %}
+    <div class="row" style="min-height: 400px;">
+
+        <!-- SHOW CART ITEMS -->
+        <div class="col-lg-8 col-md-8">
+          <table class="col-lg-12 col-md-12 table" id="table_cart">
+            <tbody>
+              {% for item in cart_list %}
+              <tr id="row_{{item.id}}">
+                <td style="width: 100px;">
+                  <img src="{{item.image.url}}" width="100px">
+                </td>
+                <td>{{item.title|safe}}</td>
+                <td>$ {{item.price}}</td>
+                <td class="text-center" style="width: 50px;">
+                  <a href="#" onclick="delete_shop_item('{{item.id}}')">
+                    <i class="fa fa-times"></i>
+                  </a>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+          <div class="col-lg-12 col-md-12 mb-4">
+              <a href="{% url 'shop' %}">Continue shopping</a>
+          </div>
+        </div>
+
+
+        <div class="col-lg-4 col-md-4 align-items-stretch pull-right">
+          <!-- coupon division -->
+          <table class="table-coupon">
+            <tr>
+              <td>
+                <input type="text" class="form-control" id="txt-coupon-code" placeholder="Coupon code">
+              </td>
+              <td style="width: 70px;">
+                <button id="btn-coupon-apply" class="btn btn-pri" onclick="apply_coupon()">Apply</button>
+              </td>
+            </tr>
+          </table>
+          <div class="error-message" id="not_valid">
+            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+            The coupon code you entered is not valid
+          </div>
+          <div class="error-message" id="expired">
+            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+            The coupon code you entered is expired
+          </div>
+          <div class="success-message" id="applied">
+            Coupon applied <b><span id="coupon_code"></span></b>
+            <a href="{% url 'cart' %}" class="pull-right">Remove</a>
+          </div>
+          <!-- end coupon -->
+          <hr>
+          <!-- toal and checkout panel  -->
+          <div class="card">
+            <div class="card-body">
+              <p>Cart Total:
+                <span class="pull-right" id="cart_total">$ {{total}}</span>
+              </p>
+              <p id="discount_p" style="display: none;">Coupon savings:
+                <span class="pull-right" id="discount">- $ 0</span>
+              </p>
+              <h5>Total
+                <span class="total-amount" id="total">$ {{total}}</span>
+              </h5>
+            </div>
+            {% if customer %}
+              <input type="button" class="btn btn-buy" value="Proceed to buy" onclick="step_2()">
+            {% else %}
+              <a href="{% url 'signin' %}?next={{request.path}}" class="btn btn-buy">Proceed to buy</a>
+            {% endif %}
+          </div>
+          <!-- END -->
+        </div>
+      </div>
+
+    {% else %}<!-- If there is NO ITEMS in the CART -->
+
+      <div class="row justify-content-md-center" style="min-height: 200px;">
+        <div class="col-lg-10 col-md-10 d-flex align-items-stretch">
+          <div class="card card-shop-item">
+            <div class="card-body text-center">
+              <i class="fa fa-shopping-cart cart-ico" aria-hidden="true"></i>
+              <br>
+              <p class="card-text ">Your cart is empty.</p>
+              <br>
+              <a href="{% url 'shop' %}" class="btn btn-pri">Keep Shopping</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endif %}
+</div>
+</section>
+<!-- End Section STEP 1 -->
+
+
+
+
+
+<!-- SECTION STEP 2 : ADDRESS -->
+<section class="team section-bg m-t-100" id="step2" style="display: none;">
+  <div class="container">
+    <div class="section-title">
+      <h2>CART</h2>
+    </div>
+
+    {% if cart_list %}
+      <!-- SHOW CART ITEMS -->
+      <div class="offset-lg-1 col-lg-10 col-md-10">
+        <div class="modal-content1">
+          
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">Specify Address</h5>
+          </div>
+
+          <div class="modal-body">
+            <form action="{% url 'cart_checkout' %}" id="formCheckout" method="POST">
+              {% csrf_token %}
+              <input type="text" name="address" id="address" class="MAP_LOCATION form-control" placeholder="Address" style="margin-bottom: 10px;">
+              <center>
+                <span style="display:none;color:red;font-size: 10px;"
+                  id="Geolocation_error">Please Enter Valid Geolocation</span>
+              </center>
+              <input class="form-control" id="pick_latitude" name="pick_latitude" type="text" style="display: none;">
+              <input class="form-control" id="pick_longitude" name="pick_longitude" type="text" style="display: none;">
+              <div id="mapdiv" style="
+                                  width: 100%; 
+                                  height: 300px; 
+                                  border: 1px 
+                                  solid #ccc;
+                                  border-radius: 4px;"></div>
+
+              <input type="hidden" name="coupon" id="coupon">
+              <div class="error-message" id="address_err">
+                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                Please enter delivery address.
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-success" onclick="step_1()">Back</button>
+            <button type="button" class="btn btn-success" onclick="checkout()">Continue</button>
+          </div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</section>
+<!-- End  Section STEP 2 -->
+
+
+<!-- To final checkout -->
+<script>
+function checkout() {
+  address = $('#address').val();
+  if(address == ''){
+    $('#address_err').show();
+  }
+  else{
+    document.getElementById("formCheckout").submit();
+  }
+}
+</script>
+
+
+<script type="text/javascript">
+	// To REMOVE shop-item from CART
+	function delete_shop_item(id){
+    $.ajax({
+      method : "POST",
+      url : "/api/cart_delete",
+      contentType: "application/json",
+      data : JSON.stringify({
+        shop_item_id : id,
+        from_cart : true
+      }),
+      success : function(response){
+        console.log(response)
+        if (response['status'] == "1"){
+          $('#row_'+id).remove();
+          $('#cart_total').text('$ ' + response['total'])
+          $('#total').text('$ ' + response['total'])
+
+          // UPDATE the CART COUNT
+          $.ajax({
+              method : "POST",
+              url : "/api/cart_count",
+              contentType: "application/json",
+
+              data : JSON.stringify({}),
+              success : function(response){
+                // console.log(response)
+                
+                if (response['status'] == "1"){
+                    location.reload();
+                  
+                  // update coupon if applied
+                  if($('#txt-coupon-code').val() !=''){
+                    apply_coupon()
+                  }
+                  if(response['cart_count']=='0' || response['cart_count']==0){
+                      $('#cart_id').hide();
+                      location.reload();
+                  }
+                  else{
+                      $('#cart_id').text(response['cart_count'])
+                      $('#cart_id').show();
+                  }
+                }
+              }
+
+          });
+        }
+      }
+    });
+  }
+</script>
+
+
+
+
+<!-- To APPY COUPON CODE -->
+<script type="text/javascript">
+function apply_coupon(){
+  $('#applied').hide()
+  coupon_code = $('#txt-coupon-code').val()
+  if(coupon_code == ''){
+  }
+  else{
+    // CALL API TO APPLY COUPON
+    $.ajax({
+        method : "POST",
+        url : "/api/validate_coupon",
+        contentType: "application/json",
+
+        data : JSON.stringify({
+          coupon_code : coupon_code,
+        }),
+        success : function(response){
+          console.log(response)
+
+          // If coupon applied successfully
+          if (response['status'] == "1"){
+            // Total
+            $('#cart_total').text('$ '+response['total'])
+            $('#cart_total1').text('$ '+response['total'])
+            // Discount
+            $('#discount').text('- $ '+response['discount'])
+            $('#discount_p').show()
+            $('#discount1').text('- $ '+response['discount'])
+            $('#discount_p1').show()
+            // Final amount
+            $('#total').text('$ '+response['final_amount'])
+            $('#total1').text('$ '+response['final_amount'])
+            // Hidden field for PAYPAL payment
+            $('#final_amount').val(response['final_amount'])
+            // Show message
+            $('#applied').show()
+            $('#coupon_code').text(response['coupon_code'])
+            // Hidden Input
+            $('#coupon').val(response['coupon_code'])
+          }
+          // if coupon is expired/invalid
+          else{
+            if (response['msg'] == "expired"){
+              $('#expired').show()
+            }
+            if (response['msg'] == "not valid"){
+              $('#not_valid').show()
+            }
+            $('#cart_total').text('$ '+response['total'])
+            $('#discount').text('- $ 0')
+            $('#discount_p').hide()
+            $('#total').text('$ '+response['total'])
+            $('#applied').hide()
+            $('#coupon_code').text()
+          }
+        }
+    });
+  }
+}
+$('#txt-coupon-code').keyup(function(){
+  $('#expired').hide()
+  $('#not_valid').hide()
+});
+</script>
+
+
+
+<!-- Script for Google MAP -->
+<script data-cfasync='false' type='text/javascript' src='https://maps.googleapis.com/maps/api/js?libraries=geometry,places&key=AIzaSyB2cR6E0DflVXuieRG925kSpuBEsz_lbEY'></script>
+
+
+<script>
+  function init() {
+      var input = document.getElementById('address');
+      var autocomplete = new google.maps.places.Autocomplete(input);
+  }
+  google.maps.event.addDomListener(window, 'load', init);
+
+// <!-- <!-- <!-- <!-- for address map --> --> --> -->
+$(document).ready(function () {
+    var MAPDIV = new google.maps.Map(document.getElementById('mapdiv'), {
+        // center: new google.maps.LatLng('51.498', '-0.126'),
+        center: new google.maps.LatLng('40.71341725053022','-74.00116633224488'),
+        zoom: 13,
+        mapTypeId: google.maps.MapTypeId.ROADMAP,
+        streetViewControl: false
+    });
+
+    var MAPDIV_MARKER = new google.maps.Marker({
+        // position: new google.maps.LatLng('51.498', '-0.126'),
+        position: new google.maps.LatLng('40.71341725053022','-74.00116633224488'),
+        map: MAPDIV,
+        draggable: true
+    });
+    google.maps.event.addListener(MAPDIV_MARKER, 'dragend', function () {
+        MAP_LAT_LNG();
+    });
+
+    var MAP_GEOCODER = new google.maps.Geocoder();
+
+    var MAP_LAT_LNG = function () {
+        var LAT_LNG = MAPDIV_MARKER.getPosition();
+        MAPDIV.panTo(LAT_LNG);
+        $('input[name="pick_latitude"]').val(LAT_LNG.lat());
+        $('input[name="pick_longitude"]').val(LAT_LNG.lng());
+        $('#address_err').hide();
+
+
+        MAP_GEOCODER.geocode({
+            latLng: LAT_LNG
+            }, function (results, status) {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    $('.MAP_LOCATION').val(results[0].formatted_address);
+                }
+        });
+    };
+    var LAT_LNG_MAP = function () {
+      var LAT = $('input[name="pick_latitude"]').val().trim();
+      var LNG = $('input[name="pick_longitude"]').val().trim();
+      $('#address_err').hide();
+
+      if ($.isNumeric(LAT) && $.isNumeric(LNG) && (-90 <= LAT) && (LAT <= 90) && (-180 <= LNG) && (LNG <= 180)) {
+      var LAT_LNG = new google.maps.LatLng(LAT, LNG);
+      MAPDIV.setCenter(LAT_LNG);
+      MAPDIV_MARKER.setPosition(LAT_LNG);
+
+      if (!$('.MAP_LOCATION').val()) {
+          MAP_GEOCODER.geocode({
+              latLng: LAT_LNG
+              }, function (results, status) {
+                  if (status == google.maps.GeocoderStatus.OK) {
+                      $('.MAP_LOCATION').val(results[0].formatted_address);
+                  }
+              });
+          }
+      } 
+      else {
+          // window.alert('Latitude and Longitude is error');
+      }
+    };
+
+    $('.LAT_LNG_MAP').on('click', function () {
+        LAT_LNG_MAP();
+    });
+    if ($('input[name="pick_latitude"]').val().trim() && $('input[name="pick_longitude"]').val().trim()) {
+        $('.LAT_LNG_MAP').trigger('click');
+    }
+
+    $('.MAP_LOCATION').change(function () {
+        var address = $('.MAP_LOCATION').val();
+        MAP_GEOCODER.geocode({ 'address': address }, function (results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                MAPDIV.setCenter(results[0].geometry.location);
+                MAPDIV_MARKER.setPosition(results[0].geometry.location);
+                $('input[name="pick_latitude"]').val(results[0].geometry.location.lat());
+                $('input[name="pick_longitude"]').val(results[0].geometry.location.lng());
+                $('#address_err').hide();
+
+            } else {
+                // alert("Location was not successful for the following reason: " + status);
+            }
+        });
+    });
+    // var MAP_AUTOCOMPLETE = new google.maps.places.Autocomplete($('.MAP_LOCATION')[0], {
+    //     componentRestrictions: {
+    //         country: ["us", "pr", "vi", "gu", "mp"]
+    //     }
+    // });
+    const center = { lat: 50.064192, lng: -130.605469 };
+    // Create a bounding box with sides ~10km away from the center point
+    const defaultBounds = {
+      north: center.lat + 0.1,
+      south: center.lat - 0.1,
+      east: center.lng + 0.1,
+      west: center.lng - 0.1,
+    };
+    const input = $('.MAP_LOCATION')[0];
+    const options = {
+      // bounds: defaultBounds,
+      componentRestrictions: { country: "us" },
+      fields: ["address_components", "geometry", "icon", "name"],
+      // origin: center,
+      strictBounds: false,
+      types: ["establishment"],
+    };
+    const MAP_AUTOCOMPLETE = new google.maps.places.Autocomplete(input, options);
+    // Set initial restriction to the greater list of countries.
+    MAP_AUTOCOMPLETE.setComponentRestrictions({
+      country: ["us", "pr", "vi", "gu", "mp"],
+    });
+
+
+    MAP_AUTOCOMPLETE.addListener('place_changed', function () {
+    var place = MAP_AUTOCOMPLETE.getPlace();
+    if (!place || !place.geometry) {
+        console.log("Autocomplete's returned place contains no geometry");
+        return;
+    }
+
+    MAPDIV.setCenter(place.geometry.location);
+    MAPDIV_MARKER.setPosition(place.geometry.location);
+
+    $('input[name="pick_latitude"]').val(place.geometry.location.lat());
+    $('input[name="pick_longitude"]').val(place.geometry.location.lng());
+    $('#address_err').hide();
+
+    });
+
+    $('.MAP_LOCATION').on('keydown', function (ev) {
+        if (ev.keyCode === 13) {
+            ev.preventDefault();
+            $('#search_loc').trigger('click');
+        }
+    });
+});
+</script>
+
+
+
+<script type="text/javascript">
+  function step_1(){
+    $('#step1').show();
+    $('#step2').hide();
+  }
+  function step_2(){
+    $('#step1').hide();
+    $('#step2').show();
+  }
+</script>
+{% endblock %}
