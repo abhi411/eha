@@ -66,7 +66,7 @@ class Customer(models.Model):
 	created_date = models.DateField(null = True, blank = True,default = datetime.date.today)
 
 	def __str__(self):
-		return self.firstname
+		return ' '.join(filter(None, (self.firstname, self.lastname)))
 
 
 

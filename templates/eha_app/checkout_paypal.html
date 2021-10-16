@@ -64,6 +64,7 @@
 
 
             <div class="modal-body">
+              <p style="color:#666666;font-size:0.95em !important;">Use Stripe to pay with all major credit cards.<br />Use Stripe to pay with Google Pay. </p>
               <div id="paypal-button-container"></div>
               <form action="{% url 'checkout' %}" id="formCheckout" method="POST">
                 {% csrf_token %}
@@ -86,7 +87,7 @@
 
 
 <!-- SCRIPT for PAYPAL -->
-<script src="https://www.paypal.com/sdk/js?client-id=ARQj0Nz1LexC2iZfP3VQ9TNQSCRmc71lnTH8xDxSPn1D5H6YkRMzZFj9jM-24zyDV4rirnQJq7qr_nth&disable-funding=credit,card"></script>
+<script src="https://www.paypal.com/sdk/js?client-id=AYWxqegrEf8NSPD_B257m2FVLH5N6fqfWyBnVQbH5E7z1GRj8F2czwK8LkM_KEmp7tX3-qJeOZR20n8Y&disable-funding=credit,card"></script>
 <script type="text/javascript" src="{% static 'assets/js/index.js' %}"></script>
 
 
@@ -112,6 +113,7 @@ $(document).ready(function(){
 
           // If coupon applied successfully
           if (response['status'] == "1"){
+            response['final_amount']=parseFloat(response['final_amount']).toFixed(2)
             // Total
             $('#cart_total').text('$ '+response['total'])
             // Discount

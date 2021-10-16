@@ -496,17 +496,17 @@ def payment_success(request):
 
 	if request.GET.get('session_id'):
 		print(request.GET.get('session_id'))
-		
+
 	# send order confirmation mail
 	orders = Order.objects.filter(order_no=order_no)
 	total = 0
 	for i in orders:
 		total += float(i.payment)
-		
 	# send mail
-	order_confirmation(customer.email, customer.firstname, orders, total)
-	order_confirmation_admin(customer.firstname, address, orders, total)
-	
+	fullname=' '.join(filter(None, (customer.firstname, customer.lastname)))
+	order_confirmation(customer.email, fullname, orders, total, address)
+	order_confirmation_admin(fullname, address, orders, total)
+
 	context = {
 		'customer' : customer,
 	}

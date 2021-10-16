@@ -77,7 +77,7 @@
                 <span class="pull-right" id="discount">- $ 0</span>
               </p>
               <h5>Total
-                <span class="total-amount" id="total">$ {{total}}</span>
+                <span class="total-amount" id="total">$ {{ total }}</span>
               </h5>
             </div>
             {% if customer %}
@@ -87,6 +87,10 @@
             {% endif %}
           </div>
           <!-- END -->
+           <p style="
+    font-style: italic;
+    color: #666666;
+">You must be logged in to an account to make a purchase.  If you're not logged in, you will be directed to the Sign In/Sign Up page.</p>
         </div>
       </div>
 
@@ -182,18 +186,19 @@
 <script>
 function checkout() {
   address = $('#address').val();
+  let latitudeVal= $("#lat").val()
   // alert(address)
-  if(address == ''){
+  if(address == '' || latitudeVal == ''){
     $('#address_err').show();
   }
   else{
     swal({
-        title: "Is this your correct address? Please confirm. ",
+        title: "Is the red pin in the correct location?  Please confirm.",
         text: "",
         icon: "warning",
         buttons: {
           confirm: {
-            text: "CONFIRM ADDRESS",
+            text: "CONFIRM LOCATION",
             value: true,
             visible: true,
             className: "",
@@ -301,7 +306,7 @@ function apply_coupon(){
 
           // If coupon applied successfully
           if (response['status'] == "1"){
-            // Total
+            response['final_amount']=parseFloat(response['final_amount']).toFixed(2) // Total
             $('#cart_total').text('$ '+response['total'])
             $('#cart_total1').text('$ '+response['total'])
             // Discount
@@ -310,6 +315,7 @@ function apply_coupon(){
             $('#discount1').text('- $ '+response['discount'])
             $('#discount_p1').show()
             // Final amount
+         
             $('#total').text('$ '+response['final_amount'])
             $('#total1').text('$ '+response['final_amount'])
             // Hidden field for PAYPAL payment

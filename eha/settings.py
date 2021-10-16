@@ -157,12 +157,12 @@ DJANGORESIZED_DEFAULT_NORMALIZE_ROTATION = True
 # ------------ TO SEND IMAGE ----------------
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = "environmentalandhealth@gmail.com"   #"envhlthanalytics@gmail.com" # 'environmentalandhealth@gmail.com' 
-EMAIL_HOST_PASSWORD = "1234@ehaSITE" #"1234#Site" #"1234#platform"
+EMAIL_HOST_USER = "envhlthanalytics@gmail.com"   #"envhlthanalytics@gmail.com" # 'environmentalandhealth@gmail.com' 
+EMAIL_HOST_PASSWORD = "2649x6sf0NW" #"1234@ehaSITE" #"1234#Site" #"1234#platform"
 EMAIL_PORT = 587 
 EMAIL_USE_TLS = True
 
 
 # STRIPE ACCOUNT KEYS
-STRIPE_SECRET_KEY = 'sk_test_51ITY0SBYrJvLly1EPmfyhBO2Guyuj3dPWC8r5JMJoyVsxVpht2gL8HNDMDeCSWfCkuPvYnywZcIZT485IFJe6nER00LVe1cxO6'
-STRIPE_PUBLISHABLE_KEY = 'pk_test_51ITY0SBYrJvLly1EKFa4okCiRrkpJyVUfarGUVTGckby7OP9FaqBhnMn5MAV4JV18x2aIbYK8EsUsUI7T29zC6aC00sKzUFQTm'
+STRIPE_SECRET_KEY = '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'
+STRIPE_PUBLISHABLE_KEY = 'pk_live_51ITY0SBYrJvLly1EtvNU9625jgYmn5vzr2V1VBipOkSlQd81UAj5AdBhXv4g8Lg5zVoWDgMZdACaxPunwVxfQuEX00DqxnAMwa'

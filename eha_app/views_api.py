@@ -9,8 +9,8 @@ import json
 from datetime import datetime, date,time,timedelta
 from django.conf import settings
 import stripe
+import xml.etree.ElementTree
 from .email import *
-
 from .models import *      # import all models from EHA APP
 
 
@@ -524,7 +524,7 @@ def create_checkout_session(request):
 				items = []
 				for shop_item_id in cart:
 					shop_item = ShopItems.objects.get(id = shop_item_id)
-					name = shop_item.title
+					name = ''.join(xml.etree.ElementTree.fromstring(shop_item.title).itertext())
 					discount_calculated = (float(shop_item.price)*discount/100)
 					final_amount = round(float(shop_item.price) - discount_calculated, 2)
 					d = {
@@ -539,7 +539,7 @@ def create_checkout_session(request):
 				items = []
 				for shop_item_id in cart:
 					shop_item = ShopItems.objects.get(id = shop_item_id)
-					name = shop_item.title
+					name = ''.join(xml.etree.ElementTree.fromstring(shop_item.title).itertext())
 					final_amount = round(float(shop_item.price),2)
 					d = {
 						'name' : name,
@@ -551,7 +551,7 @@ def create_checkout_session(request):
 
 
 			# domain_url = 'http://localhost:8000/'
-			domain_url = 'http://52.14.204.237:8000/'
+			domain_url = 'https://environmentalhealthanalytics.com/'
 			stripe.api_key = settings.STRIPE_SECRET_KEY
 
 			checkout_session = stripe.checkout.Session.create(
