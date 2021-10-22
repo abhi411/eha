@@ -37,9 +37,13 @@
         
         <p>{{item.description|safe}}</p>
         <p class="pull-right"><span class="badge badge-light1">$ {{item.price}}</span></p>
+        {% if customer %}
         <a href="#!" class="btn btn-buy1" data-toggle="modal" data-target="#exampleModalCenter" onclick="add_to_cart('{{item.id}}')">
           Buy
         </a>
+        {% else %}
+          <a href="{% url 'signin' %}?next={{request.path}}" class="btn btn-buy1">Buy</a>
+        {% endif %}
       </div>
     </div>
     {% endfor %}
