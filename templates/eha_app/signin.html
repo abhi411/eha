@@ -25,7 +25,7 @@
           <div class="form-row">
             <div class="form-group col-md-12">
               <label for="email">Email</label>
-              <input type="text" name="email" class="form-control" id="email" />
+              <input type="text" name="email" class="form-control" id="email" value="{{email}}" />
               <small class="err-msg" id="email_err">Please enter email</small>  
               <small class="err-msg" id="email_invalid_err">Invalid email</small>   
             </div>
@@ -64,7 +64,7 @@ function signin(){
     email = $("#email").val();
     password = $("#password").val();
     remember_checkbox_value = document.getElementsByName('remember')[0].checked;
-
+    console.log("remember m",remember_checkbox_value)
     if (email== ""){
       $('#email_err').show();
     }

@@ -32,7 +32,8 @@ def api_signin(request):
       
 			send_data = {'status':"1", 'msg':"Logged in successfully."}
 			update_cart_with_session(request, customer)
-			setcookie(email)
+			if is_remember:
+				setcookie(email)
 			# clear Address if set
 			if request.session.get('address'):
 				request.session['address'] = ''
