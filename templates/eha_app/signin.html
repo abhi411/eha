@@ -110,8 +110,8 @@ function signin(){
                 var next=$('#next').val();
                 location.href = next
               })
-              document.cookie = `email=${email}`
-              console.log("cokki",getCookie('email'))
+              // document.cookie = `email=${email}`
+              // console.log("cokki",getCookie('email'))
           }    
           else if(response['status'] == "0"){ 
               swal({
