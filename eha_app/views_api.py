@@ -562,8 +562,31 @@ def create_checkout_session(request):
 				mode = 'payment',
 				line_items = items,
 				customer = {
-					"id" : 'cus_9a8lCWQ8lW1SU3',
-					"name":"test name"
+					"id": "cus_9a8lCWQ8lW1SU3",
+					"object": "customer",
+					"address": null,
+					"balance": 0,
+					"created": 1479422133,
+					"currency": "usd",
+					"default_source": "card_19GyTL2eZvKYlo2CrMTALmas",
+					"delinquent": true,
+					"description": "Sofia Martin",
+					"discount": null,
+					"email": "sofia.martin.65@example.com",
+					"invoice_prefix": "65C38A1",
+					"invoice_settings": {
+						"custom_fields": null,
+						"default_payment_method": null,
+						"footer": null
+					},
+					"livemode": false,
+					"metadata": {},
+					"name": null,
+					"next_invoice_sequence": 24487,
+					"phone": null,
+					"preferred_locales": [],
+					"shipping": null,
+					"tax_exempt": "none"
 				}
 			)
 			print(checkout_session)
