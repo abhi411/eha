@@ -53,12 +53,12 @@
                 <th>{{forloop.counter}}</th>
                 <td>{{item.fk_shop_item.title|safe}}</td>
                 <td>{{item.created_date}}</td>
-                <td>$ {{item.payment}}</td>
+                <td>{{item.payment}}</td>
               </tr>
               {% endfor %}
               <tr>
                 <th colspan="3" style="text-align: right;">Subtotal : </th>
-                <th>$ {{total}}</th>
+                <th>{{total}}</td>
               </tr>
             </table>
 
