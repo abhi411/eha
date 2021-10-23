@@ -166,7 +166,9 @@ def signin(request):
 	if request.COOKIES.get("email"):
 		return render(request,'eha_app/signin.html', {'next':next,'email':request.COOKIES.get("email")})
 	else:
-	return render(request,'eha_app/signin.html', {'next':next})
+	 	return render(request,'eha_app/signin.html', {'next':next})
+
+
 
 
 
