@@ -508,6 +508,9 @@ def payment_success(request):
 	total = 0
 	for i in orders:
 		total += float(i.payment)
+		i.payment = format(float(i.payment), '.2f')
+      
+	total = format(total, '.2f')
 	# send mail
 	fullname=' '.join(filter(None, (customer.firstname, customer.lastname)))
 	order_confirmation(customer.email, fullname, orders, total, address)
