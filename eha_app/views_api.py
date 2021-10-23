@@ -565,12 +565,13 @@ def create_checkout_session(request):
 					"id" : 'cus_9a8lCWQ8lW1SU3',
 					"address": {
 						"city":"bhopal",
-						"country":"india",
+						"country":"IN",
+						"state":"MP",
 						"postal_code":"470226"
 					},
-					"email":customer.email,
+					"email":"sofia.martin.65@example.com",
 					"name":"test name",
-					"phone":null
+					"phone":"7354136552"
 				}
 			)
 			print(checkout_session)
