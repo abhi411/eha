@@ -30,6 +30,7 @@ def order_confirmation(email, name, items, total, address):
                 'address' : address,
 		'items' : items,
 		'total' : total,
+		'email' : email
 	}
 	html_message = render_to_string('emails/order_confirmation.html', context)
 	message_to_send   = strip_tags(html_message)
@@ -37,7 +38,7 @@ def order_confirmation(email, name, items, total, address):
 	
 	
 	
-def order_confirmation_admin(name, address, items, total):
+def order_confirmation_admin(name, address, items, total,email):
 	
 	mail_subject = "Your EHA order #"+items[0].order_no
 	from_email = settings.EMAIL_HOST_USER
@@ -46,6 +47,7 @@ def order_confirmation_admin(name, address, items, total):
 		'address' : address,
 		'items' : items,
 		'total' : total,
+		'email' : email
 	}
 	html_message = render_to_string('emails/order_confirmation_admin.html', context)
 	message_to_send   = strip_tags(html_message)

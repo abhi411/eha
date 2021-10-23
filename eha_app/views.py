@@ -505,7 +505,7 @@ def payment_success(request):
 	# send mail
 	fullname=' '.join(filter(None, (customer.firstname, customer.lastname)))
 	order_confirmation(customer.email, fullname, orders, total, address)
-	order_confirmation_admin(fullname, address, orders, total)
+	order_confirmation_admin(fullname, address, orders, total,customer.email)
 
 	context = {
 		'customer' : customer,
