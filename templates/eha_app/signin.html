@@ -72,7 +72,7 @@ function getCookie(name) {
 
 function signin(){
     var emailfilter = /^\b[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b$/i
-
+    console.log("cokki",getCookie('email'))
     email = $("#email").val();
     password = $("#password").val();
     remember_checkbox_value = document.getElementsByName('remember')[0].checked;
@@ -110,8 +110,8 @@ function signin(){
                 var next=$('#next').val();
                 location.href = next
               })
-              // document.cookie = `email=${email}`
-              // console.log("cokki",getCookie('email'))
+              if(remember_checkbox_value)
+              document.cookie = `email=${email}`
           }    
           else if(response['status'] == "0"){ 
               swal({

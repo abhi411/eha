@@ -161,7 +161,7 @@ def page_under_construction(request):
 #------------------------- SIGN IN ----------------------
 def signin(request):
 	next = '/'
-	email = request.session.get("email")
+	email = request.COOKIES.get("email")
 	if request.GET.get('next'):
 		next = request.GET.get('next')
 	if email:
