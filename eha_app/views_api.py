@@ -562,7 +562,7 @@ def create_checkout_session(request):
 				mode = 'payment',
 				line_items = items,
 				customer = {
-					"id" : customer_id,
+					"id" : 'cus_9a8lCWQ8lW1SU3',
 					"address": {
 						"city":"bhopal",
 						"country":"india",
@@ -570,7 +570,7 @@ def create_checkout_session(request):
 					},
 					"email":customer.email,
 					"name":"test name",
-					"phone":"7878787878"
+					"phone":null
 				}
 			)
 			print(checkout_session)
