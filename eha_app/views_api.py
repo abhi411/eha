@@ -48,7 +48,7 @@ def api_signin(request):
 
 def setcookie(email):
 	response = HttpResponse('cookie')
-	response.set_cookie('email',email)
+	request.session['email'] = email 
 # --------------------- Function to UPDATE CART with SESSION data----------------------
 def update_cart_with_session(request, customer):
 	# fetch CART from session

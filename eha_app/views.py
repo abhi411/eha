@@ -161,10 +161,11 @@ def page_under_construction(request):
 #------------------------- SIGN IN ----------------------
 def signin(request):
 	next = '/'
+	email = request.session['email']
 	if request.GET.get('next'):
 		next = request.GET.get('next')
-	if request.COOKIES.get("email"):
-		return render(request,'eha_app/signin.html', {'next':next,'email':request.COOKIES.get("email")})
+	if email:
+		return render(request,'eha_app/signin.html', {'next':next,'email':email})
 	else:
 	 	return render(request,'eha_app/signin.html', {'next':next})
 
