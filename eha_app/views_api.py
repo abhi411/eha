@@ -561,7 +561,6 @@ def create_checkout_session(request):
 				payment_method_types = ['card'],
 				mode = 'payment',
 				line_items = items,
-				customer_email = customer.email,
 				customer = {
 					"id" : customer_id,
 					"address": {
