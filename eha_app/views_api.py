@@ -581,7 +581,7 @@ def create_checkout_session(request):
 					},
 					"livemode": false,
 					"metadata": {},
-					"name": null,
+					"name": "test user",
 					"next_invoice_sequence": 24487,
 					"phone": null,
 					"preferred_locales": [],
