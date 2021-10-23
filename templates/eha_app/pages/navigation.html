@@ -53,11 +53,11 @@
           <a href="{% url 'shop' %}">Shop</a>
         </li>
         <li><a href="{% url 'contact' %}">Contact</a></li>
-
+        {% if customer %}
         <li>
           <a href="{% url 'cart' %}">Cart <sup class="badge badge-success" id="cart_id" style="display: none;"></sup></a>
         </li>
-
+        {% endif %}
       </ul>
     </nav><!-- .nav-menu -->
 
