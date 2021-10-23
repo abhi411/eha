@@ -32,23 +32,19 @@ def api_signin(request):
       
 			send_data = {'status':"1", 'msg':"Logged in successfully."}
 			update_cart_with_session(request, customer)
-			if is_remember:
-				setcookie(email,request)
 			# clear Address if set
 			if request.session.get('address'):
 				request.session['address'] = ''
 
 		else:
 			# If Customer created send success message
-			send_data = {'status':"0", 'msg':"Invalid Credentials"}
+			send_data = {'status':"0", 'msg':"Invalid Credentials"+is_remember}
 
 	except Exception as e:
 		send_data = {'status':"0", 'msg':"Something Went Wrong", 'error':str(traceback.format_exc())}
 	return JsonResponse(send_data)
 
-def setcookie(email,request):
-	response = HttpResponse('cookie')
-	request.session['email'] = email 
+
 # --------------------- Function to UPDATE CART with SESSION data----------------------
 def update_cart_with_session(request, customer):
 	# fetch CART from session
