@@ -564,7 +564,7 @@ def create_checkout_session(request):
 				customer = {
 					"id": "cus_9a8lCWQ8lW1SU3",
 					"object": "customer",
-					"address": null,
+					"address": {},
 					"balance": 0,
 					"created": 1479422133,
 					"currency": "usd",
@@ -583,7 +583,7 @@ def create_checkout_session(request):
 					"metadata": {},
 					"name": "test user",
 					"next_invoice_sequence": 24487,
-					"phone": null,
+					"phone": 7354136552,
 					"preferred_locales": [],
 					"shipping": null,
 					"tax_exempt": "none"
