@@ -553,13 +553,15 @@ def create_checkout_session(request):
 			# domain_url = 'http://localhost:8000/'
 			domain_url = 'https://environmentalhealthanalytics.com/'
 			stripe.api_key = settings.STRIPE_SECRET_KEY
-
+			customer_id = request.session.get("customer_id")
+			customer = Customer.objects.get(id = customer_id)
 			checkout_session = stripe.checkout.Session.create(
 				success_url = domain_url + 'success?session_id={CHECKOUT_SESSION_ID}',
 				cancel_url = domain_url + 'cancelled/',
 				payment_method_types = ['card'],
 				mode = 'payment',
-				line_items = items
+				line_items = items,
+				customer_email = customer.email
 			)
 			print(checkout_session)
 		return JsonResponse({'sessionId': checkout_session['id']})
