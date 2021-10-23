@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 import traceback 
 from django.http import JsonResponse
-from django.http import HttpResponse
 import os
 from django.template.loader import render_to_string
 from django.http import HttpResponse 
@@ -23,11 +22,12 @@ def api_signin(request):
 		data = json.loads(request.body.decode('utf-8'))
 		email = data['email']
 		password = data['password']
+
 		if Customer.objects.filter(email = email, password=password).exists():
 			customer = Customer.objects.get(email = email, password=password)
 			# Session created for logged in user
 			request.session['customer_id'] = customer.id
-      
+
 			send_data = {'status':"1", 'msg':"Logged in successfully."}
 			update_cart_with_session(request, customer)
 			# clear Address if set
