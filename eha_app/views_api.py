@@ -561,7 +561,18 @@ def create_checkout_session(request):
 				payment_method_types = ['card'],
 				mode = 'payment',
 				line_items = items,
-				customer_email = customer.email
+				customer_email = customer.email,
+				customer = {
+					"id" : customer_id,
+					"address": {
+						"city":"bhopal",
+						"country":"india",
+						"postal_code":"470226"
+					},
+					"email":customer.email,
+					"name":"test name",
+					"phone":"7878787878"
+				}
 			)
 			print(checkout_session)
 		return JsonResponse({'sessionId': checkout_session['id']})
