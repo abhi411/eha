@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 import traceback 
 from django.http import JsonResponse
+from django.http import HttpResponse
 import os
 from django.template.loader import render_to_string
 from django.http import HttpResponse 
@@ -22,14 +23,16 @@ def api_signin(request):
 		data = json.loads(request.body.decode('utf-8'))
 		email = data['email']
 		password = data['password']
+		is_remember = data['is_remember']
 
 		if Customer.objects.filter(email = email, password=password).exists():
 			customer = Customer.objects.get(email = email, password=password)
 			# Session created for logged in user
 			request.session['customer_id'] = customer.id
-
+      
 			send_data = {'status':"1", 'msg':"Logged in successfully."}
 			update_cart_with_session(request, customer)
+			setcookie(email)
 			# clear Address if set
 			if request.session.get('address'):
 				request.session['address'] = ''
@@ -42,7 +45,9 @@ def api_signin(request):
 		send_data = {'status':"0", 'msg':"Something Went Wrong", 'error':str(traceback.format_exc())}
 	return JsonResponse(send_data)
 
-
+def setcookie(email):
+	response = HttpResponse('cookie')
+	response.set_cookie('email',email)
 # --------------------- Function to UPDATE CART with SESSION data----------------------
 def update_cart_with_session(request, customer):
 	# fetch CART from session

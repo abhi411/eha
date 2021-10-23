@@ -39,6 +39,8 @@
             <div class="col-md-12">
               <a href="{% url 'forgot_password' %}">Forgot password</a>
             </div>
+            <div style="padding-top: 10px;" class="col-md-12">
+              <input style="height: 12px;" type="checkbox" name="remember">  Remember email</div>
           </div>
 
           <div class="text-center"><button type="button" onclick="signin()">Sign In</button></div>
@@ -61,6 +63,7 @@ function signin(){
 
     email = $("#email").val();
     password = $("#password").val();
+    remember_checkbox_value = document.getElementsByName('remember')[0].checked;
 
     if (email== ""){
       $('#email_err').show();
@@ -80,6 +83,7 @@ function signin(){
         data : JSON.stringify({
           email : email,
           password : password,
+          is_remember:remember_checkbox_value
         }),
         success : function(response){
           console.log(response)

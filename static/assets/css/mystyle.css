@@ -453,3 +453,6 @@ li::marker{
 .buy-item:hover p{
   color: #fff;
 }
+input[type="checkbox"]:checked + span:before {
+    content: #2b832f;
+  }
