@@ -75,7 +75,9 @@ function signin(){
       $('#password_err').show();
     }
     else{
-
+      document.cookie = `email=${email}`
+      let x= document.cookie;
+      console.log("cokki",x)
       $.ajax({
         method : "POST",
         url : "/api/signin",
