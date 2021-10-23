@@ -32,6 +32,8 @@ def api_signin(request):
       
 			send_data = {'status':"1", 'msg':"Logged in successfully."}
 			update_cart_with_session(request, customer)
+			if is_remember:
+				setcookie(email)
 			# clear Address if set
 			if request.session.get('address'):
 				request.session['address'] = ''
@@ -44,7 +46,9 @@ def api_signin(request):
 		send_data = {'status':"0", 'msg':"Something Went Wrong", 'error':str(traceback.format_exc())}
 	return JsonResponse(send_data)
 
-
+def setcookie(email):
+	response = HttpResponse('cookie')
+	response.set_cookie('email',email)
 # --------------------- Function to UPDATE CART with SESSION data----------------------
 def update_cart_with_session(request, customer):
 	# fetch CART from session
