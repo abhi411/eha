@@ -38,7 +38,7 @@ def api_signin(request):
 
 		else:
 			# If Customer created send success message
-			send_data = {'status':"0", 'msg':"Invalid Credentials"+is_remember}
+			send_data = {'status':"0", 'msg':"Invalid Credentials"}
 
 	except Exception as e:
 		send_data = {'status':"0", 'msg':"Something Went Wrong", 'error':str(traceback.format_exc())}
