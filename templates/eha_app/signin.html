@@ -58,6 +58,18 @@
 <!-- End SIGNIN Section -->
 
 <script type="text/javascript">
+
+function getCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0;i < ca.length;i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    }
+    return null;
+}
+
 function signin(){
     var emailfilter = /^\b[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b$/i
 
@@ -76,8 +88,8 @@ function signin(){
     }
     else{
       document.cookie = `email=${email}`
-      let x= document.cookie;
-      console.log("cokki",x)
+     
+      console.log("cokki",getCookie('email'))
       $.ajax({
         method : "POST",
         url : "/api/signin",
