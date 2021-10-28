@@ -23,7 +23,7 @@ def reset_password(code, email, name):
 # To send order confirmation mail
 def order_confirmation(email, name, items, total, address):
 	
-	mail_subject = "Your EHA order #"+items[0].order_no
+	mail_subject = "Receipt for your EHA order #"+items[0].order_no
 	from_email = settings.EMAIL_HOST_USER
 	context = {
 		'name' : name,
@@ -40,7 +40,7 @@ def order_confirmation(email, name, items, total, address):
 	
 def order_confirmation_admin(name, address, items, total,email):
 	
-	mail_subject = "Your EHA order #"+items[0].order_no
+	mail_subject = "Receipt for your EHA order #"+items[0].order_no
 	from_email = settings.EMAIL_HOST_USER
 	context = {
 		'name' : name,
