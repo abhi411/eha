@@ -165,9 +165,9 @@ def signin(request):
 	if request.GET.get('next'):
 		next = request.GET.get('next')
 	if email:
-		return render(request,'eha_app/signin.html', {'next':next,'email':email})
+		return render(request,'eha_app/signin.html', {'next':next,'email':email,'checked':true})
 	else:
-	 	return render(request,'eha_app/signin.html', {'next':next})
+	 	return render(request,'eha_app/signin.html', {'next':next,'checked':false})
 
 
 
