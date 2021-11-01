@@ -203,8 +203,17 @@ def forgot_password(request):
 
 #------------------------- CONTACT US ----------------------
 def contact(request):
-	return render(request,'eha_app/contact_us.html')
-
+	customer_id = request.session.get("customer_id")
+	# IF CUSTOMER LOGGEN IN
+	if Customer.objects.filter(id=customer_id).exists():
+		customer = Customer.objects.get(id=customer_id)
+		context = {
+			'customer' : customer,
+		}
+		return render(request,'eha_app/contact_us.html',context)
+	else:
+		# if NO CUSTOMER LOGGED IN
+		return render(request,'eha_app/contact_us.html')
 
 
 #------------------------- SHOP ITEMS ----------------------
