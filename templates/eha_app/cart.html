@@ -36,7 +36,7 @@
             </tbody>
           </table>
           <div class="col-lg-12 col-md-12 mb-4">
-              <a href="{% url 'shop' %}">Continue shopping</a>
+<i>Each air quality report purchased is specific to one US address (in the lower 48 States) that you provide during Checkout (after clicking "Proceed to buy below"). If you want multiple reports at multiple addresses, please purchase a separate report and go through the Checkout process for each address.</i>
           </div>
         </div>
 
@@ -303,7 +303,6 @@ function apply_coupon(){
         }),
         success : function(response){
           console.log(response)
-
           // If coupon applied successfully
           if (response['status'] == "1"){
             response['final_amount']=parseFloat(response['final_amount']).toFixed(2) // Total
@@ -314,8 +313,11 @@ function apply_coupon(){
             $('#discount_p').show()
             $('#discount1').text('- $ '+response['discount'])
             $('#discount_p1').show()
+            sessionStorage.setItem("appliedCoupon", coupon_code)
+            //Removing Coupon text
+            $('#txt-coupon-code').val("")
             // Final amount
-         
+          
             $('#total').text('$ '+response['final_amount'])
             $('#total1').text('$ '+response['final_amount'])
             // Hidden field for PAYPAL payment
@@ -453,6 +455,13 @@ google.maps.event.addDomListener(window, 'load', initialize);
 
 
 <script type="text/javascript">
+$(document).ready(function(){
+let appliedCoupon = sessionStorage.getItem("appliedCoupon");
+if(appliedCoupon != null && appliedCoupon != ""){
+$('#txt-coupon-code').val(appliedCoupon)
+apply_coupon();
+}
+})
   function step_1(){
     $('#step1').show();
     $('#step2').hide();

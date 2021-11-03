@@ -44,6 +44,8 @@
         {% else %}
           <a href="{% url 'signin' %}?next={{request.path}}" class="btn btn-buy1">Buy</a>
         {% endif %}
+        <br><br>
+        <i>Each air quality report purchased is specific to one US address (in the lower 48 States) that you provide during Checkout (after adding product to Cart by clicking "Buy" and then clicking "Proceed to buy" on the Cart page). If you want multiple reports at multiple addresses, please purchase a separate report and go through the Checkout process for each address.</i>
       </div>
     </div>
     {% endfor %}

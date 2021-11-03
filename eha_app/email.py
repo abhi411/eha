@@ -69,7 +69,7 @@ def email_contact_us(name, email, subject, message):
 	} 
 	html_message = render_to_string('emails/contact.html', context)
 	message_to_send   = strip_tags(html_message)
-	send_mail(mail_subject, message_to_send, from_email, ['environmentalandhealth@gmail.com'], html_message = html_message)
+	send_mail(mail_subject, message_to_send, from_email, ['environmentalandhealth@gmail.com', 'envhlthanalytics@gmail.com'], html_message = html_message)
 
 
 
