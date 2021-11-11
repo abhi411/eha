@@ -65,7 +65,7 @@
 
             <div class="modal-body">
               <p style="color:#666666;font-size:0.95em !important;">Use Stripe to pay with all major credit cards.<br />Use Stripe to pay with Google Pay. </p>
-              <div id="paypal-button-container"></div>
+              <div id="paypal-button-container" ></div>
               <form action="{% url 'checkout' %}" id="formCheckout" method="POST">
                 {% csrf_token %}
               <div id="stripe-button-container" onclick="go_to_stripe_payment()"></div>

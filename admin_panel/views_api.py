@@ -135,12 +135,15 @@ def api_coupon_add(request):
 		coupon_code = data['coupon_code'].upper()
 		discount = data['discount']
 		expiry_date = data['expiry_date']
-
+		total_uses = data['total_uses']
+		uses_remain = data['uses_remain']
 		# Create new coupon object
 		coupon = Coupon(
 			coupon_code = coupon_code,
 			discount = discount,
-			expiry_date = expiry_date
+			expiry_date = expiry_date,
+			total_uses = total_uses,
+			uses_remain = uses_remain
 		)
 		coupon.save()
 		
@@ -163,12 +166,16 @@ def api_coupon_edit(request):
 		coupon_code = data['coupon_code'].upper()
 		discount = data['discount']
 		expiry_date = data['expiry_date']
+		total_uses = data['total_uses']
+		uses_remain = data['uses_remain']
 
 		if Coupon.objects.filter(id=id).exists():
 			coupon = Coupon.objects.get(id=id)
 			coupon.coupon_code = coupon_code
 			coupon.discount = discount 
 			coupon.expiry_date = expiry_date
+			coupon.total_uses = total_uses
+			coupon.uses_remain = uses_remain
 			coupon.save()
 
 			# If saved send success message

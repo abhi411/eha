@@ -471,6 +471,9 @@ def payment_success(request):
 			discount = float(fk_coupon.discount)
 			discount_calculated = round(float(shop_item.price)*discount/100,2)
 			payment = round(float(shop_item.price) - discount_calculated, 2)
+			cp = Coupon.objects.get(coupon_code=request.session.get('coupon'))
+			cp.uses_remain = cp.uses_remain - 1
+			cp.save()
 
 		else:
 			fk_coupon = None

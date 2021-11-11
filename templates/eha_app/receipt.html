@@ -58,12 +58,12 @@
 		                		-
 		                	{% endif %}
 		                </td>
-		                <td>$ {{order.payment}}</td>
+		                <td>$ {{order.payment|floatformat:2}}</td>
 		              </tr>
 		              {% endfor %}
 		              <tr>
 		              	<th colspan="7" class="text-right"><b>Total : </b></th>
-		              	<th>$ {{amount_total}}</th>
+		              	<th>$ {{amount_total|floatformat:2}}</th>
 		              </tr>
 		              <tr>
 		              	<th colspan="8">Payment Type : {{payment_type}}</th>

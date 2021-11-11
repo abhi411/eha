@@ -22,7 +22,7 @@
 
 var stripe;
 $(document).ready(function() {
-
+sessionStorage.removeItem("appliedCoupon");
 	console.log("Sanity check!");
 	$.ajax({
 		url : "/config/",

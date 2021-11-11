@@ -30,6 +30,8 @@
                       <th class="text-center" style="width: 100px;">Sr.No</th>
                       <th>Coupon Code</th>
                       <th>Discount</th>
+                      <th>Number of Uses</th>
+                      <th>Uses Remaining</th>
                       <th>Expiry Date</th>
                       <th>Created Date</th>
                       <th style="width: 30px"></th>
@@ -42,10 +44,12 @@
                       <td class="text-center">{{ forloop.counter }}</td>
                       <td>{{coupon.coupon_code}}</td>
                       <td>{{coupon.discount}} %</td>
+                      <td>{{coupon.total_uses}}</td>
+                      <td>{{coupon.uses_remain}}</td>
                       <td>{{coupon.expiry_date}}</td>
                       <td>{{coupon.created_date}}</td>
                       <td>
-                        <a href="#" class="btn btn-success btn-sm"  data-toggle="modal" data-target="#exampleModal1" onclick="set_update_data('{{coupon.id}}','{{coupon.coupon_code}}','{{coupon.discount}}','{{coupon.expiry_date|date:'Y-m-d'}}')"> <i class="fas fa-pen"></i></a>
+                        <a href="#" class="btn btn-success btn-sm"  data-toggle="modal" data-target="#exampleModal1" onclick="set_update_data('{{coupon.id}}','{{coupon.coupon_code}}','{{coupon.discount}}','{{coupon.expiry_date|date:'Y-m-d'}}','{{coupon.total_uses}}','{{coupon.uses_remain}}')"> <i class="fas fa-pen"></i></a>
                       </td>
                       <td>
                         <a onclick = "delete_coupon('{{coupon.id}}')" class="btn btn-warning btn-sm" > 
@@ -90,6 +94,13 @@
             <small class="err-msg" id="discount_invalid_err">Invalid discount</small>
           </div>
           <div class="form-group">
+            <label for="total_uses" class="col-form-label">Number of Uses<span class="mandatory">*</span> :</label>
+            <input type="number" class="form-control" id="total_uses" min="0" max="100">
+            <input type="hidden" class="form-control" id="uses_remain">
+            <small class="err-msg" id="total_uses_err">Please enter number of uses</small>
+            <small class="err-msg" id="total_uses_invalid_err">Invalid number of uses</small>
+          </div>
+          <div class="form-group">
             <label for="expiry_date" class="col-form-label">Expiry date<span class="mandatory">*</span> :</label>
             <input type="date" class="form-control" id="expiry_date">
             <small class="err-msg" id="expiry_date_err">Please enter expiry date</small>
@@ -129,6 +140,19 @@
             <small class="err-msg" id="discount_invalid_err1">Invalid discount</small>
           </div>
           <div class="form-group">
+            <label for="total_uses1" class="col-form-label">Number of Uses<span class="mandatory">*</span> :</label>
+            <input type="number" class="form-control" id="total_uses1" min="0" max="100">
+            <small class="err-msg" id="total_uses_err1">Please enter number of uses</small>
+            <small class="err-msg" id="total_uses_invalid_err1">Invalid number of uses</small>
+          </div>
+          <div class="form-group">
+            <label for="uses_remain1" class="col-form-label">Uses Remaining<span class="mandatory">*</span> :</label>
+            <input type="number" class="form-control" id="uses_remain1" min="0" max="100">
+            <small class="err-msg" id="uses_remain_err1">Please enter uses remaining</small>
+            <small class="err-msg" id="uses_remain_invalid_err1">Invalid number uses remaining</small>
+          </div>
+
+          <div class="form-group">
             <label for="expiry_date1" class="col-form-label">Expiry date<span class="mandatory">*</span> :</label>
             <input type="date" class="form-control" id="expiry_date1">
             <small class="err-msg" id="expiry_date_err1">Please enter expiry date</small>
@@ -157,7 +181,9 @@
     coupon_code = $("#coupon_code").val();
     discount = $("#discount").val();
     expiry_date = $("#expiry_date").val();
-
+    total_uses = $("#total_uses").val();
+    uses_remain = total_uses;
+ 
     if (coupon_code == ""){
       $('#coupon_code_err').show();
     }
@@ -167,6 +193,13 @@
     else if(discount<0 || discount>100){
       $('#discount_invalid_err').show();
     }
+    else if (total_uses== ""){
+      $('#total_uses_err').show();
+    }
+    else if(total_uses<0 || total_uses>100){
+      $('#total_uses_invalid_err').show();
+    }
+
     else if (expiry_date == ""){
       $('#expiry_date_err').show();
     }
@@ -180,6 +213,8 @@
           coupon_code : coupon_code,
           discount : discount,
           expiry_date : expiry_date,
+          total_uses : total_uses,
+          uses_remain : uses_remain
         }),
         success : function(response){
           console.log(response)
@@ -218,6 +253,12 @@
     $('#discount_invalid_err').hide();
   })
 
+  $('#total_uses').keyup(function(){
+    $('#total_uses_err').hide();
+    $('#total_uses_invalid_err').hide();
+  })
+
+
   $('#expiry_date').change(function(){
     $('#expiry_date_err').hide();
   })
@@ -225,7 +266,7 @@
 </script>
 
 <script>
-  function set_update_data(id, coupon_code,discount,expiry_date){
+  function set_update_data(id, coupon_code,discount,expiry_date,total_uses,uses_remain){
     var id = id
     var coupon_code = coupon_code
     var discount = discount
@@ -234,6 +275,8 @@
     $('#coupon_code1').val(coupon_code)
     $('#discount1').val(discount)
     $('#expiry_date1').val(expiry_date)
+    $('#total_uses1').val(total_uses)
+    $('#uses_remain1').val(uses_remain)
   }
   // to Update new COUPON
   function update(){
@@ -241,6 +284,8 @@
     coupon_code = $("#coupon_code1").val();
     discount = $("#discount1").val();
     expiry_date = $("#expiry_date1").val();
+    total_uses = $("#total_uses1").val();
+    uses_remain = $("#uses_remain1").val();
 
     if (coupon_code == ""){
       $('#coupon_code_err1').show();
@@ -250,6 +295,18 @@
     }
     else if(discount<0 || discount>100){
       $('#discount_invalid_err1').show();
+    }
+    else if (total_uses== ""){
+      $('#total_uses_err1').show();
+    }
+    else if(total_uses<0 || total_uses>100){
+      $('#total_uses_invalid_err1').show();
+    }
+    else if (uses_remain == ""){
+      $('#uses_remain_err1').show();
+    }
+    else if(uses_remain <0 || uses_remain>100 || uses_remain > total_uses){
+      $('#uses_remain_invalid_err1').show();
     }
     else if (expiry_date == ""){
       $('#expiry_date_err1').show();
@@ -265,6 +322,8 @@
           coupon_code : coupon_code,
           discount : discount,
           expiry_date : expiry_date,
+          total_uses : total_uses,
+          uses_remain : uses_remain
         }),
         success : function(response){
           console.log(response)
@@ -302,6 +361,12 @@
     $('#discount_err1').hide();
     $('#discount_invalid_err1').hide();
   })
+
+  $('#total_uses1').keyup(function(){
+    $('#total_uses_err1').hide();
+    $('#total_uses_invalid_err1').hide();
+  })
+
 
   $('#expiry_date1').change(function(){
     $('#expiry_date_err1').hide();

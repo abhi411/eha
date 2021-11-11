@@ -9,7 +9,7 @@ admin.site.register(ShopItems ,ShopItemsClass)
 
 # MODEL : COUPONS
 class CouponClass(admin.ModelAdmin):
-	list_display = ('id','coupon_code','discount','expiry_date')
+	list_display = ('id','coupon_code','discount','expiry_date','total_uses','uses_remain')
 admin.site.register(Coupon ,CouponClass)
 
 # MODEL : Customer

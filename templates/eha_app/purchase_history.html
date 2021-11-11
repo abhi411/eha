@@ -23,6 +23,7 @@
                 <th>Product name</th>
                 <th>Category</th>
                 <th>Date</th>
+                <th>Address</th>
                 <th>Price</th>
                 <th></th>
               </tr>
@@ -34,7 +35,8 @@
                 <td>{{order.fk_shop_item.title|safe}}</td>
                 <td>{{order.fk_shop_item.category}}</td>
                 <td>{{order.created_date}}</td>
-                <td>$ {{order.payment}}</td>
+                <td>{{order.address}}</td>
+                <td style="padding: 0.60rem;">$ {{order.payment|floatformat:2}}</td>
                 <td class="text-center">
                   <a href="{% url 'receipt' order.id %}" class="get-started-btn scrollto">
                     Receipt

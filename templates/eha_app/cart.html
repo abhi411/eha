@@ -36,7 +36,7 @@
             </tbody>
           </table>
           <div class="col-lg-12 col-md-12 mb-4">
-<i>Each air quality report purchased is specific to one US address (in the lower 48 States) that you provide during Checkout (after clicking "Proceed to buy below"). If you want multiple reports at multiple addresses, please purchase a separate report and go through the Checkout process for each address.</i>
+<i>Each air quality report purchased is specific to one US address (in the lower 48 States) that you provide during Checkout (after clicking "Proceed to buy" on this page). If you want multiple reports at multiple addresses, please purchase a separate report and go through the Checkout process for each address.</i>
           </div>
         </div>
 
@@ -55,15 +55,20 @@
           </table>
           <div class="error-message" id="not_valid">
             <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-            The coupon code you entered is not valid
+            The coupon code you entered is not valid.
+          </div>
+          <div class="error-message" id="uses_exceeded">
+            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+            Coupon code has no uses left.
           </div>
           <div class="error-message" id="expired">
             <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-            The coupon code you entered is expired
+            The coupon code you entered is expired.
           </div>
           <div class="success-message" id="applied">
             Coupon applied <b><span id="coupon_code"></span></b>
-            <a href="{% url 'cart' %}" class="pull-right">Remove</a>
+            <a onClick="sessionStorage.removeItem('appliedCoupon');window.location.href = `{% url 'cart' %}`;" href="Javascript:void(0);" class="pull-right">Remove</a>
+            <br><i style="color: #444444;"><span id="uses_remain"></span> use(s) left.</i>
           </div>
           <!-- end coupon -->
           <hr>
@@ -293,7 +298,8 @@ function apply_coupon(){
   }
   else{
     // CALL API TO APPLY COUPON
-    $.ajax({
+   $('#expired, #not_valid, #uses_exceeded').hide() 
+   $.ajax({
         method : "POST",
         url : "/api/validate_coupon",
         contentType: "application/json",
@@ -317,7 +323,7 @@ function apply_coupon(){
             //Removing Coupon text
             $('#txt-coupon-code').val("")
             // Final amount
-          
+            $("#uses_remain").html(response['uses_remain']-1)
             $('#total').text('$ '+response['final_amount'])
             $('#total1').text('$ '+response['final_amount'])
             // Hidden field for PAYPAL payment
@@ -336,6 +342,10 @@ function apply_coupon(){
             if (response['msg'] == "not valid"){
               $('#not_valid').show()
             }
+            if (response['msg'] == "usage exceeded"){
+              $('#uses_exceeded').show()
+            }            
+            
             $('#cart_total').text('$ '+response['total'])
             $('#discount').text('- $ 0')
             $('#discount_p').hide()

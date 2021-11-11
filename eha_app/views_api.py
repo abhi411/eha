@@ -297,6 +297,8 @@ def api_validate_coupon(request):
 				print("1")
 				# if coupon is expired
 				send_data = {"status":"0","msg":"expired","total":total}
+			elif coupon.uses_remain == 0:
+				send_data = {"status":"0","msg":"usage exceeded","total":total}
 			else:
 				# fetch discount
 				discount = float(coupon.discount)
@@ -312,6 +314,7 @@ def api_validate_coupon(request):
 					'discount' : discount_amount,
 					'final_amount' : amount_after_discount,
 					'coupon_code' : coupon_code,
+					'uses_remain' : coupon.uses_remain
 				}
 		else:
 			# if coupon is not present

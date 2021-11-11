@@ -57,9 +57,9 @@
                 <div class="form-group col-md-6">
                   <label for="email">Your Email</label>
                   {% if customer %}
-                  <input type="email" class="form-control" name="email" id="email" data-rule="email" data-msg="Please enter a valid email" value="{{customer.email}}" />
+                  <input type="email" class="form-control" name="email" id="email" data-rule="email" data-msg="Please enter a valid email." value="{{customer.email}}" />
                   {% else %}
-                  <input type="email" class="form-control" name="email" id="email" data-rule="email" data-msg="Please enter a valid email" />
+                  <input type="email" class="form-control" name="email" id="email" data-rule="email" data-msg="Please enter a valid email." />
                   {% endif %}
 
                   <div class="validate"></div>
